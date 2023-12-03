@@ -65,34 +65,31 @@ public abstract class Doc {
 
   /** State for writing. */
   public static final class State {
-    final int lastIndent;
     final int indent;
     final int column;
     final boolean mustBreak;
 
-    State(int lastIndent, int indent, int column, boolean mustBreak) {
-      this.lastIndent = lastIndent;
+    State(int indent, int column, boolean mustBreak) {
       this.indent = indent;
       this.column = column;
       this.mustBreak = mustBreak;
     }
 
     public State(int indent0, int column0) {
-      this(indent0, indent0, column0, false);
+      this(indent0, column0, false);
     }
 
     State withColumn(int column) {
-      return new State(lastIndent, indent, column, mustBreak);
+      return new State(indent, column, mustBreak);
     }
 
     State withMustBreak(boolean mustBreak) {
-      return new State(lastIndent, indent, column, mustBreak);
+      return new State(indent, column, mustBreak);
     }
 
     @Override
     public String toString() {
       return MoreObjects.toStringHelper(this)
-          .add("lastIndent", lastIndent)
           .add("indent", indent)
           .add("column", column)
           .add("mustBreak", mustBreak)
@@ -303,7 +300,7 @@ public abstract class Doc {
               || state.column + breakWidth + splitWidth > maxWidth;
 
       if (optBreakDoc.isPresent()) {
-        state = optBreakDoc.get().computeBreaks(state, state.lastIndent, shouldBreak);
+        state = optBreakDoc.get().computeBreaks(state, state.indent, shouldBreak);
       }
       boolean enoughRoom = state.column + splitWidth <= maxWidth;
       state = computeSplit(commentsHelper, maxWidth, split, state.withMustBreak(false));
