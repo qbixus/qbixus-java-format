@@ -16,6 +16,7 @@ package com.google.googlejavaformat.java;
 
 import com.google.auto.value.AutoValue;
 import com.google.errorprone.annotations.Immutable;
+import com.google.googlejavaformat.MaxWidth;
 
 /**
  * Options for a google-java-format invocation.
@@ -33,25 +34,25 @@ public abstract class JavaFormatterOptions {
 
   public enum Style {
     /** The default Google Java Style configuration. */
-    GOOGLE(1, 100),
+    GOOGLE(1, new MaxWidth(100, Integer.MAX_VALUE)),
 
     /** The AOSP-compliant configuration. */
-    AOSP(2, 100);
+    AOSP(1, new MaxWidth(100, 80));
 
     private final int indentationMultiplier;
-    private final int maxLineLength;
+    private final MaxWidth maxWidth;
 
-    Style(int indentationMultiplier, int maxLineLength) {
+    Style(int indentationMultiplier, MaxWidth maxWidth) {
       this.indentationMultiplier = indentationMultiplier;
-      this.maxLineLength = maxLineLength;
+      this.maxWidth = maxWidth;
     }
 
     int indentationMultiplier() {
       return indentationMultiplier;
     }
 
-    int maxLineLength() {
-      return maxLineLength;
+    MaxWidth maxWidth() {
+      return maxWidth;
     }
   }
 
@@ -60,8 +61,8 @@ public abstract class JavaFormatterOptions {
     return style().indentationMultiplier();
   }
 
-  public int maxLineLength() {
-    return style().maxLineLength();
+  public MaxWidth maxWidth() {
+    return style().maxWidth();
   }
 
   public abstract boolean formatJavadoc();

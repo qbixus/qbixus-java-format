@@ -166,8 +166,7 @@ public final class Formatter {
     builder.sync(javaInput.getText().length());
     builder.drain();
     Doc doc = new DocBuilder().withOps(builder.build()).build();
-    doc.computeBreaks(
-        javaOutput.getCommentsHelper(), options.maxLineLength(), new Doc.State(+0, 0));
+    doc.computeBreaks(javaOutput.getCommentsHelper(), options.maxWidth(), new Doc.State(+0, 0));
     doc.write(javaOutput);
     javaOutput.flush();
   }
@@ -228,7 +227,7 @@ public final class Formatter {
     input = ImportOrderer.reorderImports(input, options.style());
     input = RemoveUnusedImports.removeUnusedImports(input);
     String formatted = formatSource(input);
-    formatted = StringWrapper.wrap(options.maxLineLength(), formatted, this);
+    formatted = StringWrapper.wrap(options.maxWidth().maxLineLength, formatted, this);
     return formatted;
   }
 

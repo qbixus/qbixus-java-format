@@ -18,6 +18,7 @@ import com.google.common.base.CharMatcher;
 import com.google.common.base.Strings;
 import com.google.googlejavaformat.CommentsHelper;
 import com.google.googlejavaformat.Input.Tok;
+import com.google.googlejavaformat.MaxWidth;
 import com.google.googlejavaformat.Newlines;
 import com.google.googlejavaformat.java.javadoc.JavadocFormatter;
 import java.util.ArrayList;
@@ -38,13 +39,13 @@ public final class JavaCommentsHelper implements CommentsHelper {
   }
 
   @Override
-  public String rewrite(Tok tok, int maxWidth, int column0) {
+  public String rewrite(Tok tok, MaxWidth maxWidth, int column0) {
     if (!tok.isComment()) {
       return tok.getOriginalText();
     }
     String text = tok.getOriginalText();
     if (tok.isJavadocComment() && options.formatJavadoc()) {
-      text = JavadocFormatter.formatJavadoc(text, column0);
+      text = JavadocFormatter.formatJavadoc(text, maxWidth, column0);
     }
     List<String> lines = new ArrayList<>();
     Iterator<String> it = Newlines.lineIterator(text);
@@ -52,7 +53,7 @@ public final class JavaCommentsHelper implements CommentsHelper {
       lines.add(CharMatcher.whitespace().trimTrailingFrom(it.next()));
     }
     if (tok.isSlashSlashComment()) {
-      return indentLineComments(lines, column0);
+      return indentLineComments(lines, maxWidth, column0);
     }
     return CommentsHelper.reformatParameterComment(tok)
         .orElseGet(
@@ -93,8 +94,8 @@ public final class JavaCommentsHelper implements CommentsHelper {
   }
 
   // Wraps and re-indents line comments.
-  private String indentLineComments(List<String> lines, int column0) {
-    lines = wrapLineComments(lines, column0);
+  private String indentLineComments(List<String> lines, MaxWidth maxWidth, int column0) {
+    lines = wrapLineComments(lines, maxWidth, column0);
     StringBuilder builder = new StringBuilder();
     builder.append(lines.get(0).trim());
     String indentString = Strings.repeat(" ", column0);
@@ -109,7 +110,7 @@ public final class JavaCommentsHelper implements CommentsHelper {
   private static final Pattern LINE_COMMENT_MISSING_SPACE_PREFIX =
       Pattern.compile("^(//+)(?!noinspection|\\$NON-NLS-\\d+\\$)[^\\s/]");
 
-  private List<String> wrapLineComments(List<String> lines, int column0) {
+  private List<String> wrapLineComments(List<String> lines, MaxWidth maxWidth, int column0) {
     List<String> result = new ArrayList<>();
     for (String line : lines) {
       // Add missing leading spaces to line comments: `//foo` -> `// foo`.
@@ -123,8 +124,8 @@ public final class JavaCommentsHelper implements CommentsHelper {
         result.add(line);
         continue;
       }
-      while (line.length() + column0 > options.maxLineLength()) {
-        int idx = options.maxLineLength() - column0;
+      while (line.length() + column0 > maxWidth.eval()) {
+        int idx = maxWidth.eval() - column0;
         // only break on whitespace characters, and ignore the leading `// `
         while (idx >= 2 && !CharMatcher.whitespace().matches(line.charAt(idx))) {
           idx--;

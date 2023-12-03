@@ -165,7 +165,8 @@ public abstract class Doc {
    * @param state the current output state
    * @return the new output state
    */
-  public abstract State computeBreaks(CommentsHelper commentsHelper, int maxWidth, State state);
+  public abstract State computeBreaks(
+      CommentsHelper commentsHelper, MaxWidth maxWidth, State state);
 
   /** Write a {@code Doc} to an {@link Output}, after breaking decisions have been made. */
   public abstract void write(Output output);
@@ -242,15 +243,18 @@ public abstract class Doc {
     List<Break> breaks = new ArrayList<>();
 
     @Override
-    public State computeBreaks(CommentsHelper commentsHelper, int maxWidth, State state) {
+    public State computeBreaks(CommentsHelper commentsHelper, MaxWidth maxWidth, State state) {
       float thisWidth = getWidth();
-      if (state.column + thisWidth <= maxWidth) {
+      if (state.column + thisWidth <= maxWidth.eval()) {
         oneLine = true;
         return state.withColumn(state.column + (int) thisWidth);
       }
+      var plusIndent = this.plusIndent.eval();
       State broken =
           computeBroken(
-              commentsHelper, maxWidth, new State(state.indent + plusIndent.eval(), state.column));
+              commentsHelper,
+              maxWidth.withExtraIndent(plusIndent),
+              new State(state.indent + plusIndent, state.column));
       return state.withColumn(broken.column);
     }
 
@@ -269,7 +273,7 @@ public abstract class Doc {
     }
 
     /** Compute breaks for a {@link Level} that spans multiple lines. */
-    private State computeBroken(CommentsHelper commentsHelper, int maxWidth, State state) {
+    private State computeBroken(CommentsHelper commentsHelper, MaxWidth maxWidth, State state) {
       splitByBreaks(docs, splits, breaks);
 
       state =
@@ -288,7 +292,7 @@ public abstract class Doc {
     /** Lay out a Break-separated group of Docs in the current Level. */
     private static State computeBreakAndSplit(
         CommentsHelper commentsHelper,
-        int maxWidth,
+        MaxWidth maxWidth,
         State state,
         Optional<Break> optBreakDoc,
         List<Doc> split) {
@@ -297,12 +301,12 @@ public abstract class Doc {
       boolean shouldBreak =
           (optBreakDoc.isPresent() && optBreakDoc.get().fillMode == FillMode.UNIFIED)
               || state.mustBreak
-              || state.column + breakWidth + splitWidth > maxWidth;
+              || state.column + breakWidth + splitWidth > maxWidth.eval();
 
       if (optBreakDoc.isPresent()) {
         state = optBreakDoc.get().computeBreaks(state, state.indent, shouldBreak);
       }
-      boolean enoughRoom = state.column + splitWidth <= maxWidth;
+      boolean enoughRoom = state.column + splitWidth <= maxWidth.eval();
       state = computeSplit(commentsHelper, maxWidth, split, state.withMustBreak(false));
       if (!enoughRoom) {
         state = state.withMustBreak(true); // Break after, too.
@@ -311,7 +315,7 @@ public abstract class Doc {
     }
 
     private static State computeSplit(
-        CommentsHelper commentsHelper, int maxWidth, List<Doc> docs, State state) {
+        CommentsHelper commentsHelper, MaxWidth maxWidth, List<Doc> docs, State state) {
       for (Doc doc : docs) {
         state = doc.computeBreaks(commentsHelper, maxWidth, state);
       }
@@ -467,7 +471,7 @@ public abstract class Doc {
     }
 
     @Override
-    public State computeBreaks(CommentsHelper commentsHelper, int maxWidth, State state) {
+    public State computeBreaks(CommentsHelper commentsHelper, MaxWidth maxWidth, State state) {
       String text = token.getTok().getOriginalText();
       return state.withColumn(state.column + text.length());
     }
@@ -524,7 +528,7 @@ public abstract class Doc {
     }
 
     @Override
-    public State computeBreaks(CommentsHelper commentsHelper, int maxWidth, State state) {
+    public State computeBreaks(CommentsHelper commentsHelper, MaxWidth maxWidth, State state) {
       return state.withColumn(state.column + 1);
     }
 
@@ -649,7 +653,7 @@ public abstract class Doc {
     }
 
     @Override
-    public State computeBreaks(CommentsHelper commentsHelper, int maxWidth, State state) {
+    public State computeBreaks(CommentsHelper commentsHelper, MaxWidth maxWidth, State state) {
       // Updating the state for {@link Break}s requires deciding if the break
       // should be taken.
       // TODO(cushon): this hierarchy is wrong, create a separate interface
@@ -737,7 +741,7 @@ public abstract class Doc {
     String text;
 
     @Override
-    public State computeBreaks(CommentsHelper commentsHelper, int maxWidth, State state) {
+    public State computeBreaks(CommentsHelper commentsHelper, MaxWidth maxWidth, State state) {
       text = commentsHelper.rewrite(tok, maxWidth, state.column);
       int firstLineLength = text.length() - Iterators.getLast(Newlines.lineOffsetIterator(text));
       return state.withColumn(state.column + firstLineLength);

@@ -63,12 +63,6 @@ import javax.tools.StandardLocation;
 /** Wraps string literals that exceed the column limit. */
 public final class StringWrapper {
 
-  /** Reflows long string literals in the given Java source code. */
-  public static String wrap(String input, Formatter formatter) throws FormatterException {
-    return StringWrapper.wrap(
-        JavaFormatterOptions.defaultOptions().maxLineLength(), input, formatter);
-  }
-
   /**
    * Reflows string literals in the given Java source code that extend past the given column limit.
    */
