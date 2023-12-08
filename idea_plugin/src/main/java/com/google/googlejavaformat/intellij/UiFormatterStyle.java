@@ -22,9 +22,9 @@ import java.util.Arrays;
 import java.util.Objects;
 
 /** Configuration options for the formatting style. */
-enum UiFormatterStyle {
-  GOOGLE("Default Google Java style", Style.GOOGLE),
-  AOSP("Android Open Source Project (AOSP) style", Style.AOSP);
+public class UiFormatterStyle {
+
+  private static UiFormatterStyle[] values;
 
   private final String description;
   private final JavaFormatterOptions.Style style;
@@ -43,10 +43,39 @@ enum UiFormatterStyle {
     return style;
   }
 
+  private static void ensureValues() {
+    if (values != null) {
+      return;
+    }
+    values =
+        Arrays.stream(Style.values())
+            .map(
+                i -> {
+                  UiFormatterStyle result;
+                  if (i == Style.GOOGLE) {
+                    result = new UiFormatterStyle("Default Google Java style", Style.GOOGLE);
+                  } else if (i == Style.AOSP) {
+                    result =
+                        new UiFormatterStyle(
+                            "Android Open Source Project (AOSP) style", Style.AOSP);
+                  } else {
+                    result = new UiFormatterStyle(i.name() + " style", i);
+                  }
+                  return result;
+                })
+            .toArray(UiFormatterStyle[]::new);
+  }
+
   static UiFormatterStyle convert(JavaFormatterOptions.Style style) {
-    return Arrays.stream(UiFormatterStyle.values())
+    ensureValues();
+    return Arrays.stream(values)
         .filter(value -> Objects.equals(value.style, style))
         .findFirst()
         .get();
+  }
+
+  static UiFormatterStyle[] values() {
+    ensureValues();
+    return values;
   }
 }

@@ -52,7 +52,23 @@ public abstract class JavaFormatterOptions {
         false,
         new MaxWidth(100, Integer.MAX_VALUE),
         ImportOrderer.AOSP_IMPORT_COMPARATOR,
-        ImportOrderer::shouldInsertBlankLineAosp);
+        ImportOrderer::shouldInsertBlankLineAosp),
+
+    QBIXUS(
+        1,
+        false,
+        true,
+        new MaxWidth(100, 80),
+        ImportOrderer.GOOGLE_IMPORT_COMPARATOR,
+        ImportOrderer::shouldInsertBlankLineGoogle),
+
+    QBIXUS_GOOGLE(
+        1,
+        false,
+        true,
+        new MaxWidth(100, Integer.MAX_VALUE),
+        ImportOrderer.GOOGLE_IMPORT_COMPARATOR,
+        ImportOrderer::shouldInsertBlankLineGoogle);
 
     public final int indentationMultiplier;
     public final boolean unifiedReturns;
