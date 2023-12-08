@@ -17,6 +17,8 @@ package com.google.googlejavaformat.java;
 import com.google.auto.value.AutoValue;
 import com.google.errorprone.annotations.Immutable;
 import com.google.googlejavaformat.MaxWidth;
+import java.util.Comparator;
+import java.util.function.BiFunction;
 
 /**
  * Options for a google-java-format invocation.
@@ -33,18 +35,36 @@ import com.google.googlejavaformat.MaxWidth;
 public abstract class JavaFormatterOptions {
 
   public enum Style {
+
     /** The default Google Java Style configuration. */
-    GOOGLE(1, new MaxWidth(100, Integer.MAX_VALUE)),
+    GOOGLE(
+        1,
+        new MaxWidth(100, Integer.MAX_VALUE),
+        ImportOrderer.GOOGLE_IMPORT_COMPARATOR,
+        ImportOrderer::shouldInsertBlankLineGoogle),
 
     /** The AOSP-compliant configuration. */
-    AOSP(1, new MaxWidth(100, 80));
+    AOSP(
+        2,
+        new MaxWidth(100, Integer.MAX_VALUE),
+        ImportOrderer.AOSP_IMPORT_COMPARATOR,
+        ImportOrderer::shouldInsertBlankLineAosp);
 
     private final int indentationMultiplier;
     private final MaxWidth maxWidth;
+    public final Comparator<ImportOrderer.Import> importComparator;
+    public final BiFunction<ImportOrderer.Import, ImportOrderer.Import, Boolean>
+        shouldInsertBlankLineFn;
 
-    Style(int indentationMultiplier, MaxWidth maxWidth) {
+    Style(
+        int indentationMultiplier,
+        MaxWidth maxWidth,
+        Comparator<ImportOrderer.Import> importComparator,
+        BiFunction<ImportOrderer.Import, ImportOrderer.Import, Boolean> shouldInsertBlankLineFn) {
       this.indentationMultiplier = indentationMultiplier;
       this.maxWidth = maxWidth;
+      this.importComparator = importComparator;
+      this.shouldInsertBlankLineFn = shouldInsertBlankLineFn;
     }
 
     int indentationMultiplier() {
