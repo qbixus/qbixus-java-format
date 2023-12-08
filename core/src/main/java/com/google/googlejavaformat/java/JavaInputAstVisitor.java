@@ -77,6 +77,7 @@ import com.google.googlejavaformat.OpsBuilder.BlankLineWanted;
 import com.google.googlejavaformat.Output.BreakTag;
 import com.google.googlejavaformat.java.DimensionHelpers.SortedDims;
 import com.google.googlejavaformat.java.DimensionHelpers.TypeWithDims;
+import com.google.googlejavaformat.java.JavaFormatterOptions.Style;
 import com.sun.source.tree.AnnotatedTypeTree;
 import com.sun.source.tree.AnnotationTree;
 import com.sun.source.tree.ArrayAccessTree;
@@ -300,6 +301,7 @@ public class JavaInputAstVisitor extends TreePathScanner<Void, Void> {
 
   protected static final Indent.Const ZERO = Indent.Const.ZERO;
   protected final int indentMultiplier;
+  protected final Style style;
   protected final Indent.Const minusTwo;
   protected final Indent.Const minusFour;
   protected final Indent.Const plusTwo;
@@ -333,9 +335,10 @@ public class JavaInputAstVisitor extends TreePathScanner<Void, Void> {
    *
    * @param builder the {@link OpsBuilder}
    */
-  public JavaInputAstVisitor(OpsBuilder builder, int indentMultiplier) {
+  public JavaInputAstVisitor(OpsBuilder builder, int indentMultiplier, Style style) {
     this.builder = builder;
     this.indentMultiplier = indentMultiplier;
+    this.style = style;
     minusTwo = Indent.Const.make(-2, indentMultiplier);
     minusFour = Indent.Const.make(-4, indentMultiplier);
     plusTwo = Indent.Const.make(+2, indentMultiplier);
@@ -553,7 +556,7 @@ public class JavaInputAstVisitor extends TreePathScanner<Void, Void> {
         path = path.getParentPath();
       }
       boolean shortItems = hasOnlyShortItems(expressions);
-      boolean allowFilledElementsOnOwnLine = shortItems || !inMemberValuePair;
+      boolean allowFilledElementsOnOwnLine = style.optimizeArgs || shortItems || !inMemberValuePair;
 
       builder.open(plusTwo);
       tokenBreakTrailingComment("{", plusTwo);
@@ -563,7 +566,8 @@ public class JavaInputAstVisitor extends TreePathScanner<Void, Void> {
         builder.open(ZERO);
       }
       boolean first = true;
-      FillMode fillMode = shortItems ? FillMode.INDEPENDENT : FillMode.UNIFIED;
+      FillMode fillMode =
+          (style.optimizeArgs || shortItems) ? FillMode.INDEPENDENT : FillMode.UNIFIED;
       for (ExpressionTree expression : expressions) {
         if (!first) {
           token(",");
@@ -1175,7 +1179,7 @@ public class JavaInputAstVisitor extends TreePathScanner<Void, Void> {
     List<ExpressionTree> operands = new ArrayList<>();
     List<String> operators = new ArrayList<>();
     walkInfix(precedence(node), node, operands, operators);
-    FillMode fillMode = hasOnlyShortItems(operands) ? INDEPENDENT : UNIFIED;
+    FillMode fillMode = (style.optimizeArgs || hasOnlyShortItems(operands)) ? INDEPENDENT : UNIFIED;
     builder.open(plusFour);
     scan(operands.get(0), null);
     int operatorsN = operators.size();
@@ -1706,7 +1710,7 @@ public class JavaInputAstVisitor extends TreePathScanner<Void, Void> {
       for (Tree typeArgument : node.getTypeArguments()) {
         if (!first) {
           token(",");
-          builder.breakOp(" ");
+          builder.breakOp(style.optimizeArgs ? INDEPENDENT : Doc.FillMode.UNIFIED, " ", ZERO);
         }
         scan(typeArgument, null);
         first = false;
@@ -1825,13 +1829,25 @@ public class JavaInputAstVisitor extends TreePathScanner<Void, Void> {
 
   @Override
   public Void visitReturn(ReturnTree node, Void unused) {
-    sync(node);
-    token("return");
-    if (node.getExpression() != null) {
-      builder.space();
-      scan(node.getExpression(), null);
+    if (style.unifiedReturns) {
+      sync(node);
+      builder.open(plusFour);
+      token("return");
+      if (node.getExpression() != null) {
+        builder.breakOp(" ");
+        scan(node.getExpression(), null);
+      }
+      token(";");
+      builder.close();
+    } else {
+      sync(node);
+      token("return");
+      if (node.getExpression() != null) {
+        builder.space();
+        scan(node.getExpression(), null);
+      }
+      token(";");
     }
-    token(";");
     return null;
   }
 
@@ -2622,7 +2638,7 @@ public class JavaInputAstVisitor extends TreePathScanner<Void, Void> {
     for (int i = 0; i < parameters.size(); i++) {
       VariableTree parameter = parameters.get(i);
       if (!first) {
-        builder.breakOp(" ");
+        builder.breakOp(style.optimizeArgs ? INDEPENDENT : Doc.FillMode.UNIFIED, " ", ZERO);
       }
       visitToDeclare(
           DeclarationKind.PARAMETER,
@@ -3295,7 +3311,10 @@ public class JavaInputAstVisitor extends TreePathScanner<Void, Void> {
   private void argList(List<? extends ExpressionTree> arguments) {
     builder.open(ZERO);
     boolean first = true;
-    FillMode fillMode = hasOnlyShortItems(arguments) ? FillMode.INDEPENDENT : FillMode.UNIFIED;
+    FillMode fillMode =
+        (style.optimizeArgs || hasOnlyShortItems(arguments))
+            ? FillMode.INDEPENDENT
+            : FillMode.UNIFIED;
     for (ExpressionTree argument : arguments) {
       if (!first) {
         token(",");

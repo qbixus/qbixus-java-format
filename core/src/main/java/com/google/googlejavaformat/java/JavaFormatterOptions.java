@@ -39,6 +39,8 @@ public abstract class JavaFormatterOptions {
     /** The default Google Java Style configuration. */
     GOOGLE(
         1,
+        false,
+        false,
         new MaxWidth(100, Integer.MAX_VALUE),
         ImportOrderer.GOOGLE_IMPORT_COMPARATOR,
         ImportOrderer::shouldInsertBlankLineGoogle),
@@ -46,11 +48,15 @@ public abstract class JavaFormatterOptions {
     /** The AOSP-compliant configuration. */
     AOSP(
         2,
+        false,
+        false,
         new MaxWidth(100, Integer.MAX_VALUE),
         ImportOrderer.AOSP_IMPORT_COMPARATOR,
         ImportOrderer::shouldInsertBlankLineAosp);
 
-    private final int indentationMultiplier;
+    public final int indentationMultiplier;
+    public final boolean unifiedReturns;
+    public final boolean optimizeArgs;
     private final MaxWidth maxWidth;
     public final Comparator<ImportOrderer.Import> importComparator;
     public final BiFunction<ImportOrderer.Import, ImportOrderer.Import, Boolean>
@@ -58,10 +64,14 @@ public abstract class JavaFormatterOptions {
 
     Style(
         int indentationMultiplier,
+        boolean unifiedReturns,
+        boolean optimizeArgs,
         MaxWidth maxWidth,
         Comparator<ImportOrderer.Import> importComparator,
         BiFunction<ImportOrderer.Import, ImportOrderer.Import, Boolean> shouldInsertBlankLineFn) {
       this.indentationMultiplier = indentationMultiplier;
+      this.unifiedReturns = unifiedReturns;
+      this.optimizeArgs = optimizeArgs;
       this.maxWidth = maxWidth;
       this.importComparator = importComparator;
       this.shouldInsertBlankLineFn = shouldInsertBlankLineFn;
