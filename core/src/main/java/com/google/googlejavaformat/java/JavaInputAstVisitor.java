@@ -643,7 +643,14 @@ public class JavaInputAstVisitor extends TreePathScanner<Void, Void> {
     scan(node.getVariable(), null);
     builder.space();
     splitToken(operatorName(node));
-    builder.breakOp(" ");
+    if (style.optimizeAssignments) {
+      BreakTag varBreak = genSym();
+      builder.breakOp(UNIFIED, " ", ZERO, Optional.of(varBreak));
+      builder.close();
+      builder.open(Indent.If.make(varBreak, plusFour, ZERO));
+    } else {
+      builder.breakOp(" ");
+    }
     scan(node.getExpression(), null);
     builder.close();
     return null;
@@ -662,7 +669,14 @@ public class JavaInputAstVisitor extends TreePathScanner<Void, Void> {
     scan(node.getVariable(), null);
     builder.space();
     splitToken(operatorName(node));
-    builder.breakOp(" ");
+    if (style.optimizeAssignments) {
+      BreakTag varBreak = genSym();
+      builder.breakOp(UNIFIED, " ", ZERO, Optional.of(varBreak));
+      builder.close();
+      builder.open(Indent.If.make(varBreak, plusFour, ZERO));
+    } else {
+      builder.breakOp(" ");
+    }
     scan(node.getExpression(), null);
     builder.close();
     return null;

@@ -41,6 +41,7 @@ public abstract class JavaFormatterOptions {
         1,
         false,
         false,
+        false,
         new MaxWidth(100, Integer.MAX_VALUE),
         ImportOrderer.GOOGLE_IMPORT_COMPARATOR,
         ImportOrderer::shouldInsertBlankLineGoogle),
@@ -48,6 +49,7 @@ public abstract class JavaFormatterOptions {
     /** The AOSP-compliant configuration. */
     AOSP(
         2,
+        false,
         false,
         false,
         new MaxWidth(100, Integer.MAX_VALUE),
@@ -58,6 +60,16 @@ public abstract class JavaFormatterOptions {
         1,
         false,
         true,
+        false,
+        new MaxWidth(100, 80),
+        ImportOrderer.GOOGLE_IMPORT_COMPARATOR,
+        ImportOrderer::shouldInsertBlankLineGoogle),
+
+    QBIXUS_INCUBATING(
+        1,
+        false,
+        true,
+        true,
         new MaxWidth(100, 80),
         ImportOrderer.GOOGLE_IMPORT_COMPARATOR,
         ImportOrderer::shouldInsertBlankLineGoogle),
@@ -66,6 +78,7 @@ public abstract class JavaFormatterOptions {
         1,
         false,
         true,
+        false,
         new MaxWidth(100, Integer.MAX_VALUE),
         ImportOrderer.GOOGLE_IMPORT_COMPARATOR,
         ImportOrderer::shouldInsertBlankLineGoogle);
@@ -73,6 +86,7 @@ public abstract class JavaFormatterOptions {
     public final int indentationMultiplier;
     public final boolean unifiedReturns;
     public final boolean optimizeArgs;
+    public final boolean optimizeAssignments;
     private final MaxWidth maxWidth;
     public final Comparator<ImportOrderer.Import> importComparator;
     public final BiFunction<ImportOrderer.Import, ImportOrderer.Import, Boolean>
@@ -82,12 +96,14 @@ public abstract class JavaFormatterOptions {
         int indentationMultiplier,
         boolean unifiedReturns,
         boolean optimizeArgs,
+        boolean optimizeAssignments,
         MaxWidth maxWidth,
         Comparator<ImportOrderer.Import> importComparator,
         BiFunction<ImportOrderer.Import, ImportOrderer.Import, Boolean> shouldInsertBlankLineFn) {
       this.indentationMultiplier = indentationMultiplier;
       this.unifiedReturns = unifiedReturns;
       this.optimizeArgs = optimizeArgs;
+      this.optimizeAssignments = optimizeAssignments;
       this.maxWidth = maxWidth;
       this.importComparator = importComparator;
       this.shouldInsertBlankLineFn = shouldInsertBlankLineFn;
