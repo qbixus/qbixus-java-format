@@ -29,7 +29,7 @@ repositories {
 }
 
 // https://github.com/google/google-java-format/releases
-val googleJavaFormatVersion = "1.23.0"
+val googleJavaFormatVersion = "HEAD-SNAPSHOT"
 
 java {
   sourceCompatibility = JavaVersion.VERSION_17
@@ -78,7 +78,7 @@ dependencies {
     instrumentationTools()
     testFramework(TestFrameworkType.Plugin.Java)
   }
-  implementation("com.google.googlejavaformat:google-java-format:${googleJavaFormatVersion}")
+  implementation("com.github.qbixus.googlejavaformat:google-java-format:${googleJavaFormatVersion}")
   // https://mvnrepository.com/artifact/junit/junit
   testImplementation("junit:junit:4.13.2")
   // https://mvnrepository.com/artifact/com.google.truth/truth
