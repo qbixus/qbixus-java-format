@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package com.google.googlejavaformat.intellij;
+package com.github.qbixus.googlejavaformat.intellij;
 
 import com.intellij.formatting.service.FormattingNotificationService;
 import com.intellij.openapi.project.Project;
 
 class Notifications {
 
-  static final String PARSING_ERROR_NOTIFICATION_GROUP = "google-java-format parsing error";
+  static final String PARSING_ERROR_NOTIFICATION_GROUP = "qbixus-java-format parsing error";
   static final String PARSING_ERROR_TITLE = PARSING_ERROR_NOTIFICATION_GROUP;
 
   static String parsingErrorMessage(String filename) {
-    return "google-java-format failed. Does " + filename + " have syntax errors?";
+    return "qbixus-java-format failed. Does " + filename + " have syntax errors?";
   }
 
   static void displayParsingErrorNotification(Project project, String filename) {

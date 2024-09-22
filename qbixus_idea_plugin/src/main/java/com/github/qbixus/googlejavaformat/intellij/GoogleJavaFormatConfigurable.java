@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.google.googlejavaformat.intellij;
+package com.github.qbixus.googlejavaformat.intellij;
 
-import com.google.googlejavaformat.intellij.GoogleJavaFormatSettings.EnabledState;
+import com.github.qbixus.googlejavaformat.intellij.QbixusJavaFormatSettings.EnabledState;
 import com.intellij.openapi.options.BaseConfigurable;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SearchableConfigurable;
@@ -49,7 +49,7 @@ class GoogleJavaFormatConfigurable extends BaseConfigurable implements Searchabl
   @NotNull
   @Override
   public String getId() {
-    return "google-java-format.settings";
+    return "qbixus-java-format.settings";
   }
 
   @Nullable
@@ -61,7 +61,7 @@ class GoogleJavaFormatConfigurable extends BaseConfigurable implements Searchabl
   @Nls
   @Override
   public String getDisplayName() {
-    return "google-java-format Settings";
+    return "qbixus-java-format Settings";
   }
 
   @Nullable
@@ -78,7 +78,7 @@ class GoogleJavaFormatConfigurable extends BaseConfigurable implements Searchabl
 
   @Override
   public void apply() throws ConfigurationException {
-    GoogleJavaFormatSettings settings = GoogleJavaFormatSettings.getInstance(project);
+    QbixusJavaFormatSettings settings = QbixusJavaFormatSettings.getInstance(project);
     settings.setEnabled(enable.isSelected() ? EnabledState.ENABLED : getDisabledState());
     settings.setStyle(((UiFormatterStyle) styleComboBox.getSelectedItem()).convert());
   }
@@ -92,14 +92,14 @@ class GoogleJavaFormatConfigurable extends BaseConfigurable implements Searchabl
 
   @Override
   public void reset() {
-    GoogleJavaFormatSettings settings = GoogleJavaFormatSettings.getInstance(project);
+    QbixusJavaFormatSettings settings = QbixusJavaFormatSettings.getInstance(project);
     enable.setSelected(settings.isEnabled());
     styleComboBox.setSelectedItem(UiFormatterStyle.convert(settings.getStyle()));
   }
 
   @Override
   public boolean isModified() {
-    GoogleJavaFormatSettings settings = GoogleJavaFormatSettings.getInstance(project);
+    QbixusJavaFormatSettings settings = QbixusJavaFormatSettings.getInstance(project);
     return enable.isSelected() != settings.isEnabled()
         || !styleComboBox.getSelectedItem().equals(UiFormatterStyle.convert(settings.getStyle()));
   }
@@ -129,7 +129,7 @@ class GoogleJavaFormatConfigurable extends BaseConfigurable implements Searchabl
     panel = new JPanel();
     panel.setLayout(new GridLayoutManager(3, 2, new Insets(0, 0, 0, 0), -1, -1));
     enable = new JCheckBox();
-    enable.setText("Enable google-java-format");
+    enable.setText("Enable qbixus-java-format");
     panel.add(
         enable,
         new GridConstraints(

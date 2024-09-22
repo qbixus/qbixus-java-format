@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.googlejavaformat.intellij;
+package com.github.qbixus.googlejavaformat.intellij;
 
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationGroup;
@@ -26,11 +26,11 @@ import org.jetbrains.annotations.NotNull;
 
 final class InitialConfigurationStartupActivity implements StartupActivity.Background {
 
-  private static final String NOTIFICATION_TITLE = "Enable google-java-format";
+  private static final String NOTIFICATION_TITLE = "Enable qbixus-java-format";
 
   @Override
   public void runActivity(@NotNull Project project) {
-    GoogleJavaFormatSettings settings = GoogleJavaFormatSettings.getInstance(project);
+    QbixusJavaFormatSettings settings = QbixusJavaFormatSettings.getInstance(project);
 
     if (settings.isUninitialized()) {
       settings.setEnabled(false);
@@ -40,14 +40,14 @@ final class InitialConfigurationStartupActivity implements StartupActivity.Backg
     }
   }
 
-  private void displayNewUserNotification(Project project, GoogleJavaFormatSettings settings) {
+  private void displayNewUserNotification(Project project, QbixusJavaFormatSettings settings) {
     NotificationGroupManager groupManager = NotificationGroupManager.getInstance();
     NotificationGroup group = groupManager.getNotificationGroup(NOTIFICATION_TITLE);
     Notification notification =
         new Notification(
             group.getDisplayId(),
             NOTIFICATION_TITLE,
-            "The google-java-format plugin is disabled by default. "
+            "The qbixus-java-format plugin is disabled by default. "
                 + "<a href=\"enable\">Enable for this project</a>.",
             NotificationType.INFORMATION);
     notification.setListener(

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.googlejavaformat.intellij;
+package com.github.qbixus.googlejavaformat.intellij;
 
 import com.google.googlejavaformat.java.JavaFormatterOptions;
 import com.intellij.openapi.components.PersistentStateComponent;
@@ -25,20 +25,20 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @State(
-    name = "GoogleJavaFormatSettings",
-    storages = {@Storage("google-java-format.xml")})
-class GoogleJavaFormatSettings implements PersistentStateComponent<GoogleJavaFormatSettings.State> {
+    name = "QbixusJavaFormatSettings",
+    storages = {@Storage("qbixus-java-format.xml")})
+class QbixusJavaFormatSettings implements PersistentStateComponent<QbixusJavaFormatSettings.State> {
 
   private final Project project;
 
   private State state = new State();
 
-  GoogleJavaFormatSettings(Project project) {
+  QbixusJavaFormatSettings(Project project) {
     this.project = project;
   }
 
-  static GoogleJavaFormatSettings getInstance(Project project) {
-    return project.getService(GoogleJavaFormatSettings.class);
+  static QbixusJavaFormatSettings getInstance(Project project) {
+    return project.getService(QbixusJavaFormatSettings.class);
   }
 
   @Nullable

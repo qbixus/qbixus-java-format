@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.googlejavaformat.intellij;
+package com.github.qbixus.googlejavaformat.intellij;
 
 import com.google.common.util.concurrent.Runnables;
 import com.google.googlejavaformat.java.FormatterException;
@@ -35,7 +35,7 @@ public class GoogleJavaFormatImportOptimizer implements ImportOptimizer {
   @Override
   public boolean supports(@NotNull PsiFile file) {
     return JavaFileType.INSTANCE.equals(file.getFileType())
-        && GoogleJavaFormatSettings.getInstance(file.getProject()).isEnabled();
+        && QbixusJavaFormatSettings.getInstance(file.getProject()).isEnabled();
   }
 
   @Override
@@ -53,7 +53,7 @@ public class GoogleJavaFormatImportOptimizer implements ImportOptimizer {
       return Runnables.doNothing();
     }
 
-    JavaFormatterOptions.Style style = GoogleJavaFormatSettings.getInstance(project).getStyle();
+    JavaFormatterOptions.Style style = QbixusJavaFormatSettings.getInstance(project).getStyle();
 
     final String origText = document.getText();
     String text;

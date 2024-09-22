@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.google.googlejavaformat.intellij;
+package com.github.qbixus.googlejavaformat.intellij;
 
 import static com.google.common.collect.ImmutableSet.toImmutableSet;
 import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.collect.ImmutableList;
-import com.google.googlejavaformat.intellij.GoogleJavaFormatSettings.State;
+import com.github.qbixus.googlejavaformat.intellij.QbixusJavaFormatSettings.State;
 import com.intellij.codeInsight.actions.OptimizeImportsProcessor;
 import com.intellij.formatting.service.FormattingService;
 import com.intellij.lang.ImportOptimizer;
@@ -60,7 +60,7 @@ public class GoogleJavaFormatImportOptimizerTest {
         ImmutableList.of(delegatingFormatter),
         fixture.getProjectDisposable());
 
-    var settings = GoogleJavaFormatSettings.getInstance(fixture.getProject());
+    var settings = QbixusJavaFormatSettings.getInstance(fixture.getProject());
     State resetState = new State();
     resetState.setEnabled("true");
     settings.loadState(resetState);

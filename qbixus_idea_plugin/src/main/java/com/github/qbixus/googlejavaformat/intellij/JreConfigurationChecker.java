@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.googlejavaformat.intellij;
+package com.github.qbixus.googlejavaformat.intellij;
 
 import com.google.common.base.Suppliers;
 import com.intellij.ide.ui.IdeUiService;
@@ -58,7 +58,7 @@ class JreConfigurationChecker {
           "com.sun.tools.javac.tree.JCTree",
           "com.sun.tools.javac.util.Log");
     } catch (ClassNotFoundException e) {
-      logger.error("Error checking jre configuration for google-java-format", e);
+      logger.error("Error checking jre configuration for qbixus-java-format", e);
       return false;
     }
   }
@@ -87,16 +87,16 @@ class JreConfigurationChecker {
   private void displayConfigurationErrorNotification() {
     Notification notification =
         new Notification(
-            "Configure JRE for google-java-format",
-            "Configure the JRE for google-java-format",
-            "The google-java-format plugin needs additional configuration before it can be used. "
+            "Configure JRE for qbixus-java-format",
+            "Configure the JRE for qbixus-java-format",
+            "The qbixus-java-format plugin needs additional configuration before it can be used. "
                 + "<a href=\"instructions\">Follow the instructions here</a>.",
             NotificationType.INFORMATION);
     notification.setListener(
         (n, e) -> {
           IdeUiService.getInstance()
               .browse(
-                  "https://github.com/google/google-java-format/blob/master/README.md#intellij-jre-config");
+                  "https://github.com/qbixus/google-java-format/blob/master/README.md#intellij-jre-config");
           n.expire();
         });
     notification.notify(project);

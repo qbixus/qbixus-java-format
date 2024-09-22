@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.google.googlejavaformat.intellij;
+package com.github.qbixus.googlejavaformat.intellij;
 
 import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.collect.ImmutableList;
-import com.google.googlejavaformat.intellij.GoogleJavaFormatSettings.State;
+import com.github.qbixus.googlejavaformat.intellij.QbixusJavaFormatSettings.State;
 import com.google.googlejavaformat.java.Formatter;
 import com.google.googlejavaformat.java.JavaFormatterOptions;
 import com.google.googlejavaformat.java.JavaFormatterOptions.Style;
@@ -44,7 +44,7 @@ import org.junit.Test;
 
 public class GoogleJavaFormatFormattingServiceTest {
   private JavaCodeInsightTestFixture fixture;
-  private GoogleJavaFormatSettings settings;
+  private QbixusJavaFormatSettings settings;
   private DelegatingFormatter delegatingFormatter;
 
   @Before
@@ -62,7 +62,7 @@ public class GoogleJavaFormatFormattingServiceTest {
         ImmutableList.of(delegatingFormatter),
         fixture.getProjectDisposable());
 
-    settings = GoogleJavaFormatSettings.getInstance(fixture.getProject());
+    settings = QbixusJavaFormatSettings.getInstance(fixture.getProject());
     State resetState = new State();
     resetState.setEnabled("true");
     settings.loadState(resetState);

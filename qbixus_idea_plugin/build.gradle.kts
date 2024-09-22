@@ -38,17 +38,12 @@ java {
 
 intellijPlatform {
   pluginConfiguration {
-    name = "google-java-format"
+    name = "qbixus-java-format"
     version = "${googleJavaFormatVersion}.0"
     ideaVersion {
       sinceBuild = "223"
       untilBuild = provider { null }
     }
-  }
-
-  publishing {
-    val jetbrainsPluginRepoToken: String by project
-    token.set(jetbrainsPluginRepoToken)
   }
 }
 

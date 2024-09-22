@@ -14,12 +14,12 @@
   limitations under the License.
 -->
 
-<idea-plugin url="https://github.com/google/google-java-format/tree/master/idea_plugin"
+<idea-plugin url="https://github.com/qbixus/google-java-format/tree/master/qbixus_idea_plugin"
   require-restart="true">
-  <id>google-java-format</id>
-  <name>google-java-format</name>
-  <vendor url="https://github.com/google/google-java-format">
-    Google
+  <id>qbixus-java-format</id>
+  <name>qbixus-java-format</name>
+  <vendor url="https://github.com/qbixus/google-java-format">
+    Qbixus
   </vendor>
 
   <depends>com.intellij.modules.java</depends>
@@ -30,86 +30,32 @@
     Formats source code using the google-java-format tool.<p>
 
     This plugin requires additional IDE configuration. For more information,
-    <a href="https://github.com/google/google-java-format/blob/master/README.md#intellij-jre-config">read
+    <a href="https://github.com/qbixus/google-java-format/blob/master/README.md#intellij-jre-config">read
     the documentation.</a>
   ]]></description>
   <change-notes><![CDATA[
     <dl>
       <dt>1.23.0.0</dt>
-      <dd>Updated to use google-java-format 1.23.0.</dd>
-      <dd>Fix crashes in IntelliJ 2024.2 (Thanks, <code>@nrayburn-tech</code>!)</dd>
-      <dd>Updated to the latest IntelliJ build system (Thanks, <code>@mmaeller</code>!)</dd>
-      <dt>1.22.0.0</dt>
-      <dd>Updated to use google-java-format 1.22.0.</dd>
-      <dt>1.21.0.0</dt>
-      <dd>Updated to use google-java-format 1.21.0.</dd>
-      <dt>1.20.0.0</dt>
-      <dd>Updated to use google-java-format 1.20.0.</dd>
-      <dt>1.19.2.0</dt>
-      <dd>Updated to use google-java-format 1.19.2.</dd>
-      <dt>1.17.0.0</dt>
-      <dd>Updated to use google-java-format 1.17.0.</dd>
-      <dd>Fixed "Document is locked" errors (Thanks, <code>@facboy</code>!)</dd>
-      <dt>1.16.0.2</dt>
-      <dd>Disable AD_HOC_FORMATTING, which should stop the formatter from running so often when it wasn't specifically requested.
-      <dt>1.16.0.1</dt>
-      <dd>When the plugin isn't configured correctly, show the error on every
-      format command. Previously it was only being shown at startup and going
-      unnoticed.
-      <dt>1.16.0.0</dt>
-      <dd>Updated to use google-java-format 1.16.0.</dd>
-      <dd>Use the new IDE formatting APIs for a simplified plugin.</dd>
-      <dd>Optimize Imports now uses google-java-format.</dd>
-      <dt>1.15.0.0</dt>
-      <dd>Updated to use google-java-format 1.15.0.</dd>
-      <dt>1.14.0.0</dt>
-      <dd>Updated to use google-java-format 1.14.</dd>
-      <dt>1.13.0.0</dt>
-      <dd>Updated to use google-java-format 1.13.</dd>
-      <dt>1.12.0.0</dt>
-      <dd>Updated to use google-java-format 1.12.</dd>
-      <dt>1.11.0.0</dt>
-      <dd>Updated to use google-java-format 1.11.</dd>
-      <dt>1.10.0.0</dt>
-      <dd>Updated to use google-java-format 1.10.</dd>
-      <dt>1.9.0.0</dt>
-      <dd>Updated to use google-java-format 1.9.</dd>
-      <dt>1.8.0.1</dt>
-      <dd>Fixed support for 2020.2 IDEs.</dd>
-      <dt>1.8.0.0</dt>
-      <dd>Updated to use google-java-format 1.8.</dd>
-      <dt>1.7.0.5</dt>
-      <dd>Added a version for 2020.1+ IDEs.</dd>
-      <dt>1.7.0.4</dt>
-      <dd>Marked the plugin as being incompatible with 2020.1+ IDEs.</dd>
-      <dt>1.7.0.3</dt>
-      <dd>Fixed the plugin on 2019.3 IDEs.</dd>
-      <dt>1.7.0.2</dt>
-      <dd>Added support for all IDEs after 2017.3.</dd>
-      <dt>1.7.0.1</dt>
-      <dd>Added support for 2019.1 IDEs.</dd>
-      <dt>1.7.0.0</dt>
-      <dd>Upgraded to google-java-format 1.7.</dd>
+      <dd>TBD</dd>
     </dl>
   ]]></change-notes>
 
   <extensions defaultExtensionNs="com.intellij">
     <formattingService
-      implementation="com.google.googlejavaformat.intellij.GoogleJavaFormatFormattingService"/>
-    <postStartupActivity implementation="com.google.googlejavaformat.intellij.InitialConfigurationStartupActivity"/>
+      implementation="com.github.qbixus.googlejavaformat.intellij.GoogleJavaFormatFormattingService"/>
+    <postStartupActivity implementation="com.github.qbixus.googlejavaformat.intellij.InitialConfigurationStartupActivity"/>
     <projectConfigurable
-      instance="com.google.googlejavaformat.intellij.GoogleJavaFormatConfigurable"
-      id="google-java-format.settings"
-      displayName="google-java-format Settings"/>
+      instance="com.github.qbixus.googlejavaformat.intellij.GoogleJavaFormatConfigurable"
+      id="qbixus-java-format.settings"
+      displayName="qbixus-java-format Settings"/>
     <projectService
-      serviceImplementation="com.google.googlejavaformat.intellij.GoogleJavaFormatSettings"/>
-    <projectService serviceImplementation="com.google.googlejavaformat.intellij.JreConfigurationChecker"/>
-    <notificationGroup displayType="STICKY_BALLOON" id="Enable google-java-format"
+      serviceImplementation="com.github.qbixus.googlejavaformat.intellij.QbixusJavaFormatSettings"/>
+    <projectService serviceImplementation="com.github.qbixus.googlejavaformat.intellij.JreConfigurationChecker"/>
+    <notificationGroup displayType="STICKY_BALLOON" id="Enable qbixus-java-format"
       isLogByDefault="false"/>
-    <notificationGroup displayType="STICKY_BALLOON" id="Configure JRE for google-java-format"
+    <notificationGroup displayType="STICKY_BALLOON" id="Configure JRE for qbixus-java-format"
       isLogByDefault="true"/>
-    <notificationGroup displayType="BALLOON" id="google-java-format parsing error"
+    <notificationGroup displayType="BALLOON" id="qbixus-java-format parsing error"
       isLogByDefault="false"/>
   </extensions>
-
 </idea-plugin>

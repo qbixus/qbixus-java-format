@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.googlejavaformat.intellij;
+package com.github.qbixus.googlejavaformat.intellij;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
@@ -49,7 +49,7 @@ public class GoogleJavaFormatFormattingService extends AsyncDocumentFormattingSe
       return null;
     }
 
-    Style style = GoogleJavaFormatSettings.getInstance(project).getStyle();
+    Style style = QbixusJavaFormatSettings.getInstance(project).getStyle();
     Formatter formatter = createFormatter(style, request.canChangeWhitespaceOnly());
     return new GoogleJavaFormatFormattingTask(formatter, request);
   }
@@ -61,7 +61,7 @@ public class GoogleJavaFormatFormattingService extends AsyncDocumentFormattingSe
 
   @Override
   protected String getName() {
-    return "google-java-format";
+    return "qbixus-java-format";
   }
 
   private static Formatter createFormatter(Style style, boolean canChangeWhiteSpaceOnly) {
@@ -80,7 +80,7 @@ public class GoogleJavaFormatFormattingService extends AsyncDocumentFormattingSe
   @Override
   public boolean canFormat(@NotNull PsiFile file) {
     return JavaFileType.INSTANCE.equals(file.getFileType())
-        && GoogleJavaFormatSettings.getInstance(file.getProject()).isEnabled();
+        && QbixusJavaFormatSettings.getInstance(file.getProject()).isEnabled();
   }
 
   @Override
