@@ -1,4 +1,5 @@
 record SwitchRecord(int i) {
+
   int x(Object o) {
     return switch (o) {
       case SwitchRecord(int i) -> i;

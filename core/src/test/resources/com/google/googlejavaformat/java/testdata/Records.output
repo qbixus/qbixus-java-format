@@ -1,4 +1,5 @@
 class Records {
+
   record R1() {}
 
   private record R2() {}
@@ -15,6 +16,7 @@ class Records {
   record R7<T>(@Deprecated int x, int... y) {}
 
   record R8<T>() implements Comparable<R8<T>> {
+
     @Override
     public int compareTo(R8<T> other) {
       return 0;
@@ -22,6 +24,7 @@ class Records {
   }
 
   record R9(int x) {
+
     R9(int x) {
       this.x = x;
     }

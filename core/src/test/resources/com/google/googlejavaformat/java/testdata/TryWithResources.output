@@ -1,4 +1,5 @@
 class TryWtihResources {
+
   {
     try (@A C c = c(); ) {}
     try (final @A C c = c(); ) {}

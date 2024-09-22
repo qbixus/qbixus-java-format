@@ -890,7 +890,8 @@ public class JavaInputAstVisitor extends TreePathScanner<Void, Void> {
       }
     } else {
       builder.open(plusTwo);
-      builder.blankLineWanted(BlankLineWanted.NO);
+      dropEmptyDeclarations();
+      builder.blankLineWanted(BlankLineWanted.YES);
       builder.forcedBreak();
       builder.open(ZERO);
       boolean afterFirstToken = false;
@@ -3760,17 +3761,17 @@ public class JavaInputAstVisitor extends TreePathScanner<Void, Void> {
         builder.open(ZERO);
       }
       builder.open(plusTwo);
+      dropEmptyDeclarations();
       boolean first = first0.isYes();
       boolean lastOneGotBlankLineBefore = false;
       PeekingIterator<Tree> it = Iterators.peekingIterator(bodyDeclarations.iterator());
       while (it.hasNext()) {
         Tree bodyDeclaration = it.next();
-        dropEmptyDeclarations();
         builder.forcedBreak();
         boolean thisOneGetsBlankLineBefore =
             bodyDeclaration.getKind() != VARIABLE || hasJavaDoc(bodyDeclaration);
         if (first) {
-          builder.blankLineWanted(PRESERVE);
+          builder.blankLineWanted(YES);
         } else if (!first && (thisOneGetsBlankLineBefore || lastOneGotBlankLineBefore)) {
           builder.blankLineWanted(YES);
         }
@@ -3784,10 +3785,11 @@ public class JavaInputAstVisitor extends TreePathScanner<Void, Void> {
         } else {
           scan(bodyDeclaration, null);
         }
+        dropEmptyDeclarations();
+
         first = false;
         lastOneGotBlankLineBefore = thisOneGetsBlankLineBefore;
       }
-      dropEmptyDeclarations();
       builder.forcedBreak();
       builder.close();
       builder.forcedBreak();

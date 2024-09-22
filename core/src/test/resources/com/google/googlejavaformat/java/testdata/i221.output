@@ -1,4 +1,5 @@
 class I221 {
+
   {
     logger.log(
         Level.WARNING,

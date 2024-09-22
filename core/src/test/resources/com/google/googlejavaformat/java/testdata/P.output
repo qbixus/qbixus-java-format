@@ -29,6 +29,7 @@ class P<
     T22,
     T23,
     T24> {
+
   void f() {
     int x = (1 + 2) * 3;
     ++x;

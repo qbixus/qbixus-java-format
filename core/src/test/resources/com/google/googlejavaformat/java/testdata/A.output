@@ -6,7 +6,9 @@ package com.google.googlejavaformat.java.test;
  * ArrayTypes, AssertStatements, and Assignments.
  */
 class A {
+
   public @interface X {
+
     int x();
 
     int y() default
@@ -49,6 +51,7 @@ class A {
 
   A a1 =
       new A() {
+
         int x =
             array1[
                     0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0

@@ -1,4 +1,5 @@
 class B21283374 {
+
   void f(
       boolean flagA,
       boolean flagB,

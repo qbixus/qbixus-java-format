@@ -1,4 +1,5 @@
 class I1153 {
+
   void f() {
     //// (1) one
     int one;

@@ -1,4 +1,5 @@
 class B20569245 {
+
   void m() {
     if (true) System.err.println("asd");
 

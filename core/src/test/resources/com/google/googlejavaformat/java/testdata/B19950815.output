@@ -1,4 +1,5 @@
 class B19950815 {
+
   void m() {
     checkArgument(
         truncationLength >= 0,

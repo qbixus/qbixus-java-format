@@ -1,4 +1,5 @@
 class B25787055 {
+
   {
     logger.atInfo().log(
         "Scratch Session Cleaner exiting. Number of deleted sessions: %d, names: %s",

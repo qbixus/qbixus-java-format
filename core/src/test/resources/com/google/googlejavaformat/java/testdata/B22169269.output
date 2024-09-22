@@ -1,4 +1,5 @@
 class B22169269 {
+
   {
     try {
     } catch (ClassNotFoundException

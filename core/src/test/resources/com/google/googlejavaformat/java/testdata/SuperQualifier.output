@@ -1,4 +1,5 @@
 class SuperQualifier {
+
   String a() {
     return this.toStringHelper()
         .add("foo", foo_________________________________________)

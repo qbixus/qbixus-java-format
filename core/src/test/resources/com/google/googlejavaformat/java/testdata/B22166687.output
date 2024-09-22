@@ -1,9 +1,11 @@
 class B22166687 {
+
   public static class Wrapper
       extends CrossComponentSetBindingsWrapper<
           ExtensionWrapper<FootprintsGenericSearchResponseExtension>>
       implements CrossComponentSetBindingsWrapper<
           ExtensionWrapper<FootprintsGenericSearchResponseExtension>> {
+
     void m() {}
   }
 
@@ -14,6 +16,7 @@ class B22166687 {
               ExtensionWrapper<FootprintsGenericSearchResponseExtension>>,
           CrossComponentSetBindingsWrapper<
               ExtensionWrapper<FootprintsGenericSearchResponseExtension>> {
+
     void m() {}
   }
 }

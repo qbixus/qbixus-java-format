@@ -1,4 +1,5 @@
 class I603 {
+
   abstract sealed class T1 {}
 
   sealed class T2 extends X implements Y permits Z {}

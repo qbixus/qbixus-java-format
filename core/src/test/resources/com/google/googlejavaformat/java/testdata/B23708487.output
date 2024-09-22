@@ -1,4 +1,5 @@
 class B23708487 {
+
   static {
     TASK_AS_OWNER =
         com.google.security.acl.proto2api.ACL.Entry.newBuilder()

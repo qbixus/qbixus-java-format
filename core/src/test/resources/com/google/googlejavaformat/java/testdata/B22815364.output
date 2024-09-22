@@ -1,4 +1,5 @@
 class B22815364 {
+
   @Xxx({
     "=0|=0", "Xxx xxxx xx xxxxxxxx xx xxxxxxxxxxxxx.",
     "=0|xxx", "Xxx xxxx x xxxxxxxxxxxx.",

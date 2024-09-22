@@ -1,4 +1,5 @@
 class B20580212 {
+
   void m() {
     GroupExpansionReply mockIsgReply =
         buildRecipientListSubGroupReply(

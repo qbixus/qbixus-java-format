@@ -1,4 +1,5 @@
 class B27602933 {
+
   {
     try {
     } catch (final A | B x) {

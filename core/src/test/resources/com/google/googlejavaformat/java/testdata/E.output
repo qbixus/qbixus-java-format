@@ -9,9 +9,11 @@ import com.google.common.collect.Lists;
  */
 @MarkerAnnotation
 class E<T> {
+
   // TODO(user): Test higher language-level features.
 
   enum Enum1 {
+
     A,
     B,
     C,
@@ -22,6 +24,7 @@ class E<T> {
 
   @MarkerAnnotation
   public enum Enum2 {
+
     A,
     B,
     C,
@@ -32,6 +35,7 @@ class E<T> {
   }
 
   enum Enum3 {
+
     A(
         0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0
             + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0),
@@ -49,6 +53,7 @@ class E<T> {
   }
 
   enum Enum4 {
+
     A(
         0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0
             + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0),
