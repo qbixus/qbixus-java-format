@@ -1,4 +1,5 @@
 class B24202287 {
+
   {
     this.overflowContactCompositeSupportedRenderers =
         this.getSharePanelResponse

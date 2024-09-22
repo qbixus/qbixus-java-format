@@ -30,6 +30,7 @@ public class StringWrapperTest {
     String input =
         lines(
             "class T {",
+            "",
             // This is a wide line, but has to be split in code because of 100-char limit.
             "  String s = someMethodWithQuiteALongNameThatWillGetUsUpCloseToTheColumnLimit() "
                 + "+ \"foo bar foo bar foo bar\";",
@@ -41,6 +42,7 @@ public class StringWrapperTest {
     String output =
         lines(
             "class T {",
+            "",
             "  String s =",
             "      someMethodWithQuiteALongNameThatWillGetUsUpCloseToTheColumnLimit()",
             "          + \"foo bar foo bar foo bar\";",
@@ -83,6 +85,7 @@ public class StringWrapperTest {
         lines(
             "package p;",
             "public class T {",
+            "",
             "  String s =",
             "      \"\"\"",
             "      \u0007lorem",
@@ -100,6 +103,7 @@ public class StringWrapperTest {
     String input =
         lines(
             "public class T {",
+            "",
             "  String s =",
             "      \"\"\"",
             "      lorem   ",
@@ -109,6 +113,7 @@ public class StringWrapperTest {
     String expected =
         lines(
             "public class T {",
+            "",
             "  String s =",
             "      \"\"\"",
             "      lorem",
@@ -129,6 +134,7 @@ public class StringWrapperTest {
     String input =
         lines(
             "public class T {",
+            "",
             "  String s =",
             "      \"\"\"",
             "      lorem\\u0020",
@@ -138,6 +144,7 @@ public class StringWrapperTest {
     String expected =
         lines(
             "public class T {",
+            "",
             "  String s =",
             "      \"\"\"",
             "      lorem\\u0020",
@@ -154,6 +161,7 @@ public class StringWrapperTest {
     String input =
         lines(
             "public class T {",
+            "",
             "  String s =",
             "      \"\"\"",
             "      lorem",
@@ -163,6 +171,7 @@ public class StringWrapperTest {
     String expected =
         lines(
             "public class T {",
+            "",
             "  String s =",
             "      \"\"\"",
             "      lorem",

@@ -1,4 +1,5 @@
 class B20915776 {
+
   @Inject
   void ChunkAnalysis(
       // TODO(user) ...

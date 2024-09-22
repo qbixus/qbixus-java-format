@@ -5,6 +5,7 @@ package com.google.googlejavaformat;
  * com.google.googlejavaformat.java.JavaCommentsHelper JavaCommentsHelper}.
  */
 public interface CommentsHelper {
+
   /**
    * Try to rewrite comments, returning rewritten text.
    *

@@ -1,4 +1,5 @@
 class ExpressionSwitch {
+
   boolean odd(int x) {
     return switch (x) {
       case 0 -> true;

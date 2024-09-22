@@ -1,4 +1,5 @@
 class I477 {
+
   public static String foo(int in) {
     return switch (in) {
       case 1 -> "A";

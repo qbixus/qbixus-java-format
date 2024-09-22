@@ -1,4 +1,5 @@
 class T {
+
   {
     this(
         x, // line comment

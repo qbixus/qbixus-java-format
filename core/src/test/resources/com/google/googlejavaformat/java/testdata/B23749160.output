@@ -1,4 +1,5 @@
 class B23749160 {
+
   {
     mockDailySummaryModuleListFiller
         .buildDailySummaryModulesWithHeadersOnlyAndOneExpandedDayxxxxxxxxxxx(
