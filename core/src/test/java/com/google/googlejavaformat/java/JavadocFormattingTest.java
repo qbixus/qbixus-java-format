@@ -1048,6 +1048,7 @@ public final class JavadocFormattingTest {
   public void paragraphTag() {
     String[] input = {
       "class Test {",
+      "",
       "  /**",
       "   * hello<p>world",
       "   */",
@@ -1063,6 +1064,7 @@ public final class JavadocFormattingTest {
     };
     String[] expected = {
       "class Test {",
+      "",
       "  /**",
       "   * hello",
       "   *",
@@ -1084,7 +1086,8 @@ public final class JavadocFormattingTest {
   @Test
   public void xhtmlParagraphTag() {
     String[] input = {
-      "class Test {",
+      "class Test {", //
+      "",
       "  /**",
       "   * hello<p/>world",
       "   */",
@@ -1094,6 +1097,7 @@ public final class JavadocFormattingTest {
     };
     String[] expected = {
       "class Test {",
+      "",
       "  /**",
       "   * hello",
       "   *",
@@ -1443,6 +1447,7 @@ public final class JavadocFormattingTest {
   public void u2028LineSeparator() {
     String[] input = {
       "public class Foo {",
+      "",
       "  /**\u2028",
       "   * Set and enable something.",
       "   */",
@@ -1451,6 +1456,7 @@ public final class JavadocFormattingTest {
     };
     String[] expected = {
       "public class Foo {",
+      "",
       "  /**",
       "   * \u2028 Set and enable something.",
       "   */",
@@ -1464,6 +1470,7 @@ public final class JavadocFormattingTest {
   public void missingSummaryFragment() {
     String[] input = {
       "public class Foo {",
+      "",
       "  /**",
       "   * @return something.",
       "   */",
@@ -1477,6 +1484,7 @@ public final class JavadocFormattingTest {
     };
     String[] expected = {
       "public class Foo {",
+      "",
       "  /**",
       "   * @return something.",
       "   */",

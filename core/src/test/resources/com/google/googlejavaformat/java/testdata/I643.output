@@ -1,4 +1,5 @@
 public class Foo {
+
   static final int VERBOSE_WORDY_AND_LENGTHY_ONE = 1;
   static final int VERBOSE_WORDY_AND_LENGTHY_TWO = 2;
   static final int VERBOSE_WORDY_AND_LENGTHY_FOUR = 4;

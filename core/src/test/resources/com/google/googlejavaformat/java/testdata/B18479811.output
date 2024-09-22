@@ -1,4 +1,5 @@
 class Test {
+
   public void testPrimitiveFields() {
     ConverterVerifier.verifyFieldsAreAnnotatedWithToPojo(
         Contact.class,

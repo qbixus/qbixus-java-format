@@ -69,10 +69,10 @@ public final class PartialFormattingTest {
             "");
     String expectedOutput =
         lines(
-
             /* line 0 character  0 */ "class Foo{",
-            /* line 1 character 11 */ "  void f() {}",
-            /* line 2 character 25 */ "}",
+            /* line 1 character 11 */ "",
+            /* line 2 character 12 */ "  void f() {}",
+            /* line 3 character 26 */ "}",
             "");
     // Claim to have modified the parentheses.
     int start = input.indexOf("() {");
@@ -93,8 +93,9 @@ public final class PartialFormattingTest {
     String expectedOutput =
         lines(
             /* line 0 character  0 */ "class Foo{",
-            /* line 1 character 11 */ "  void f() {}",
-            /* line 2 character 25 */ "}",
+            /* line 1 character 11 */ "",
+            /* line 2 character 12 */ "  void f() {}",
+            /* line 3 character 26 */ "}",
             "");
     // Claim to have modified everything after the parentheses.
     String output = doGetFormatReplacements(input, 20, 21);
@@ -142,6 +143,7 @@ public final class PartialFormattingTest {
     String expectedOutput =
         lines(
             "class Foo {",
+            "",
             "  void m() {",
             "ImmutableList<Integer> ids = ImmutableList.builder()",
             ".add(1)",
@@ -173,6 +175,7 @@ public final class PartialFormattingTest {
             "    XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX,",
             "    XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX,",
             "    XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX> {",
+            "",
             "void ",
             " m() ",
             " {",
@@ -276,6 +279,7 @@ public final class PartialFormattingTest {
     String expectedOutput =
         lines(
             "class Test {", //
+            "",
             "  void zzz() {",
             "    int x; } }");
     int idx = input.indexOf("zzz");
@@ -309,6 +313,7 @@ public final class PartialFormattingTest {
     String expectedOutput =
         lines(
             "class Test {", //
+            "",
             "  void f() {}",
             "}",
             "");
@@ -669,6 +674,7 @@ public final class PartialFormattingTest {
         .isEqualTo(
             lines(
                 "", //
+                "",
                 "  void f() {}"));
     int replaceFrom = input.indexOf("void f") - newline.length();
     assertThat(replacement.getReplaceRange().lowerEndpoint()).isEqualTo(replaceFrom);
@@ -749,6 +755,7 @@ public final class PartialFormattingTest {
             " 1;",
             "    int y =",
             "        new Runnable() {",
+            "",
             "          void run() {",
             "            System.err.println(42);",
             "          }",
@@ -789,6 +796,7 @@ public final class PartialFormattingTest {
             " 1;",
             "  int y =",
             "      new Runnable() {",
+            "",
             "        void run() {",
             "          System.err.println(42);",
             "        }",
@@ -810,6 +818,7 @@ public final class PartialFormattingTest {
     String input =
         lines(
             "public class MyTest {", //
+            "",
             "int x = 1;",
             "",
             "int y = 1;",
@@ -818,7 +827,7 @@ public final class PartialFormattingTest {
             "");
     String expectedOutput = input;
 
-    testFormatLine(input, expectedOutput, 3);
+    testFormatLine(input, expectedOutput, 4);
   }
 
   @Test
@@ -826,6 +835,7 @@ public final class PartialFormattingTest {
     String input =
         lines(
             "public class MyTest {", //
+            "",
             "int",
             "y",
             "= 1;",
@@ -835,12 +845,13 @@ public final class PartialFormattingTest {
     String expectedOutput =
         lines(
             "public class MyTest {", //
+            "",
             "  int y = 1;",
             "}",
             "",
             "");
 
-    testFormatLine(input, expectedOutput, 3);
+    testFormatLine(input, expectedOutput, 4);
   }
 
   // formatted region expands to include entire comment
@@ -849,6 +860,7 @@ public final class PartialFormattingTest {
     String input =
         lines(
             "public class MyTest {",
+            "",
             "/* This is a",
             "            poorly indented",
             "                       comment*/",
@@ -859,6 +871,7 @@ public final class PartialFormattingTest {
     String expectedOutput =
         lines(
             "public class MyTest {",
+            "",
             "  /* This is a",
             "  poorly indented",
             "             comment*/",
@@ -867,7 +880,7 @@ public final class PartialFormattingTest {
             "",
             "");
 
-    testFormatLine(input, expectedOutput, 3);
+    testFormatLine(input, expectedOutput, 4);
   }
 
   @Test
@@ -945,12 +958,14 @@ public final class PartialFormattingTest {
     String input =
         lines(
             "class Foo{", //
+            "",
             "int xxx; // asd",
             "}",
             "");
     String expectedOutput =
         lines(
             "class Foo{", //
+            "",
             "  int xxx; // asd",
             "}",
             "");
@@ -963,7 +978,7 @@ public final class PartialFormattingTest {
     StringWriter err = new StringWriter();
 
     Main main = new Main(new PrintWriter(out, true), new PrintWriter(err, true), System.in);
-    String[] args = {"-lines", "2", path.toString()};
+    String[] args = {"-lines", "3", path.toString()};
     assertThat(main.format(args)).isEqualTo(0);
     assertThat(out.toString()).isEqualTo(expectedOutput);
   }
@@ -1075,6 +1090,7 @@ public final class PartialFormattingTest {
     String expectedOutput =
         lines(
             "class Foo {", //
+            "",
             "  int x = 1;",
             "}",
             "");
@@ -1102,6 +1118,7 @@ public final class PartialFormattingTest {
     String expectedOutput =
         lines(
             "class Foo {", //
+            "",
             "  int x = 1;",
             "}",
             "");
@@ -1395,6 +1412,7 @@ public final class PartialFormattingTest {
   public void commentBeforeBadConstructor() throws Exception {
     String[] lines = {
       "class D {", //
+      "",
       "  /** */",
       "  F() {}",
       "}",
@@ -1402,6 +1420,7 @@ public final class PartialFormattingTest {
     String output = new Formatter().formatSource(lines(lines));
     String[] expected = {
       "class D {", //
+      "",
       "  /** */",
       "  F() {}",
       "}",
@@ -1474,6 +1493,7 @@ public final class PartialFormattingTest {
   public void endOfLine() throws Exception {
     String[] input = {
       "class foo {",
+      "",
       "  foo(",
       "      int aaaaaaaaaaaaaaa,",
       "      int ccccccccccccc) {",
@@ -1484,6 +1504,7 @@ public final class PartialFormattingTest {
     };
     String[] expected = {
       "class foo {",
+      "",
       "  foo(int aaaaaaaaaaaaaaa, int ccccccccccccc) {",
       "    int a = 0;",
       "    int c = 0;",
@@ -1791,6 +1812,7 @@ public final class PartialFormattingTest {
     String expectedOutput =
         lines(
             "class Foo {", //
+            "",
             "  private Foo() {}",
             "  ;",
             "}",

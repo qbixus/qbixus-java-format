@@ -19,6 +19,7 @@
  * @param <T> concrete subclass
  */
 class Test {
+
   /**
    * Field
    *

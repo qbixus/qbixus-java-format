@@ -1,4 +1,5 @@
 class T {
+
   int test(String v) {
     switch (v) {
       // this is a line comment about "zero"

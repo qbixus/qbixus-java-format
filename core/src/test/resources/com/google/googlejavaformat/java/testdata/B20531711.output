@@ -1,4 +1,5 @@
 class B20531711 {
+
   void m() {
     when(mLoginHelper.getAllAccounts())
         .thenReturn(

@@ -1,4 +1,5 @@
 class B21331232 {
+
   private <SF, S> S instantiate(
       Class<?> wrapperType, Type t, FailureStrategy fs, SF factory, Iterable<T> data) {}
 

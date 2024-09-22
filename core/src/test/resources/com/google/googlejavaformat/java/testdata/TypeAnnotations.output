@@ -31,6 +31,7 @@ class TypeAnnotations {
   TypeAnnotations() {}
 
   enum Foo {
+
     @Nullable
     BAR;
   }

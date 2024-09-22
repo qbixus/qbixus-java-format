@@ -1,4 +1,5 @@
 class Unnamed {
+
   {
     int acc = 0;
     for (Order _ : orders) {

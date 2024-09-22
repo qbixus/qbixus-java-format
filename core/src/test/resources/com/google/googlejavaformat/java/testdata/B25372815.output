@@ -1,4 +1,5 @@
 class Test {
+
   {
     // For "All goals" view, show only advertiser goals tab.
     return newPageTypeSet(

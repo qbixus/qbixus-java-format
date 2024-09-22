@@ -10,6 +10,7 @@ import java.util.List;
  */
 @MarkerAnnotation
 class M {
+
   class Exception0 extends Exception {}
 
   class Exception1 extends Exception {}
@@ -986,6 +987,7 @@ class M {
   }
 
   static class Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx {
+
     static Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx fff(
         int x) {
       return null;
@@ -994,6 +996,7 @@ class M {
 
   static
   class Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx {
+
     static Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx fff(
         int x) {
       return null;

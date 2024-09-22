@@ -1,5 +1,7 @@
 class B23349153 {
+
   enum Foo {
+
     A,
     B,
     ;
@@ -12,7 +14,9 @@ class B23349153 {
 }
 
 private enum UnsafeAtomicHelperFactory {
+
   REALLY_TRY_TO_CREATE {
+
     @Override
     AtomicHelper tryCreateUnsafeAtomicHelper() {
       return new UnsafeAtomicHelper();
@@ -20,6 +24,7 @@ private enum UnsafeAtomicHelperFactory {
   },
 
   DONT_EVEN_TRY_TO_CREATE {
+
     @Override
     AtomicHelper tryCreateUnsafeAtomicHelper() {
       return null;

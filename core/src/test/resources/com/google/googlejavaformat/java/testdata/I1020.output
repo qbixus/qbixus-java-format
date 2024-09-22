@@ -1,4 +1,5 @@
 public sealed interface A {
+
   record AA(Long a) implements A {}
 
   record AAA(String b) implements A {}

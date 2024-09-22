@@ -168,7 +168,7 @@ public class SnippetFormatter {
         {
           SnippetWrapper wrapper = new SnippetWrapper();
           for (int i = 1; i <= initialIndent; i++) {
-            wrapper.append("class Dummy {\n").append(createIndentationString(i));
+            wrapper.append("class Dummy {\n\n").append(createIndentationString(i));
           }
           wrapper.appendSource(source);
           wrapper.closeBraces(initialIndent);
@@ -178,7 +178,7 @@ public class SnippetFormatter {
         {
           SnippetWrapper wrapper = new SnippetWrapper();
           for (int i = 1; i <= initialIndent; i++) {
-            wrapper.append("class Dummy {\n").append(createIndentationString(i));
+            wrapper.append("class Dummy {\n\n").append(createIndentationString(i));
           }
           wrapper.appendSource(source);
           wrapper.closeBraces(initialIndent);
@@ -187,7 +187,7 @@ public class SnippetFormatter {
       case STATEMENTS:
         {
           SnippetWrapper wrapper = new SnippetWrapper();
-          wrapper.append("class Dummy {\n").append(createIndentationString(1));
+          wrapper.append("class Dummy {\n\n").append(createIndentationString(1));
           for (int i = 2; i <= initialIndent; i++) {
             wrapper.append("{\n").append(createIndentationString(i));
           }
@@ -198,7 +198,7 @@ public class SnippetFormatter {
       case EXPRESSION:
         {
           SnippetWrapper wrapper = new SnippetWrapper();
-          wrapper.append("class Dummy {\n").append(createIndentationString(1));
+          wrapper.append("class Dummy {\n\n").append(createIndentationString(1));
           for (int i = 2; i <= initialIndent; i++) {
             wrapper.append("{\n").append(createIndentationString(i));
           }

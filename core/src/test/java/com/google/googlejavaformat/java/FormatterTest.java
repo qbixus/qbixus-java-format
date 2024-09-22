@@ -52,6 +52,7 @@ public final class FormatterTest {
         Joiner.on("\n")
             .join(
                 "class A {",
+                "",
                 "    void b() {",
                 "        while (true) {",
                 "            weCanBeCertainThatThisWillEndUpGettingWrapped(",
@@ -91,8 +92,8 @@ public final class FormatterTest {
 
   @Test
   public void testFormatStdinStdoutWithDashFlag() throws Exception {
-    String input = "class Foo{\n" + "void f\n" + "() {\n" + "}\n" + "}\n";
-    String expectedOutput = "class Foo {\n" + "  void f() {}\n" + "}\n";
+    String input = "class Foo{\n\n" + "void f\n" + "() {\n" + "}\n" + "}\n";
+    String expectedOutput = "class Foo {\n\n" + "  void f() {}\n" + "}\n";
 
     InputStream in = new ByteArrayInputStream(input.getBytes(UTF_8));
     StringWriter out = new StringWriter();
@@ -110,8 +111,8 @@ public final class FormatterTest {
 
   @Test
   public void testFormatLengthUpToEOF() throws Exception {
-    String input = "class Foo{\n" + "void f\n" + "() {\n" + "}\n" + "}\n\n\n\n\n\n";
-    String expectedOutput = "class Foo {\n" + "  void f() {}\n" + "}\n";
+    String input = "class Foo{\n\n" + "void f\n" + "() {\n" + "}\n" + "}\n\n\n\n\n\n";
+    String expectedOutput = "class Foo {\n\n" + "  void f() {}\n" + "}\n";
 
     Path tmpdir = testFolder.newFolder().toPath();
     Path path = tmpdir.resolve("Foo.java");
@@ -180,33 +181,33 @@ public final class FormatterTest {
 
   @Test
   public void docCommentTrailingBlank() throws FormatterException {
-    String input = "class T {\n/** asd */\n\nint x;\n}";
+    String input = "class T {\n\n/** asd */\n\nint x;\n}";
     String output = new Formatter().formatSource(input);
-    String expect = "class T {\n  /** asd */\n  int x;\n}\n";
+    String expect = "class T {\n\n  /** asd */\n  int x;\n}\n";
     assertThat(output).isEqualTo(expect);
   }
 
   @Test
   public void blockCommentInteriorTrailingBlank() throws FormatterException {
-    String input = "class T {\n/*\n* asd \n* fgh\n*/ \n\nint x;\n}";
+    String input = "class T {\n\n/*\n* asd \n* fgh\n*/ \n\nint x;\n}";
     String output = new Formatter().formatSource(input);
-    String expect = "class T {\n  /*\n   * asd\n   * fgh\n   */\n\n  int x;\n}\n";
+    String expect = "class T {\n\n  /*\n   * asd\n   * fgh\n   */\n\n  int x;\n}\n";
     assertThat(output).isEqualTo(expect);
   }
 
   @Test
   public void blockCommentTrailingBlank() throws FormatterException {
-    String input = "class T {\n/* asd */ \n\nint x;\n}";
+    String input = "class T {\n\n/* asd */ \n\nint x;\n}";
     String output = new Formatter().formatSource(input);
-    String expect = "class T {\n  /* asd */\n\n  int x;\n}\n";
+    String expect = "class T {\n\n  /* asd */\n\n  int x;\n}\n";
     assertThat(output).isEqualTo(expect);
   }
 
   @Test
   public void lineCommentTrailingBlank() throws FormatterException {
-    String input = "class T {\n// asd \n\nint x;\n}";
+    String input = "class T {\n\n// asd \n\nint x;\n}";
     String output = new Formatter().formatSource(input);
-    String expect = "class T {\n  // asd\n\n  int x;\n}\n";
+    String expect = "class T {\n\n  // asd\n\n  int x;\n}\n";
     assertThat(output).isEqualTo(expect);
   }
 
@@ -221,9 +222,9 @@ public final class FormatterTest {
 
   @Test
   public void noBlankAfterLineCommentWithInteriorBlankLine() throws FormatterException {
-    String input = "class T {\n// asd \n\n// dsa \nint x;\n}";
+    String input = "class T {\n\n// asd \n\n// dsa \nint x;\n}";
     String output = new Formatter().formatSource(input);
-    String expect = "class T {\n  // asd\n\n  // dsa\n  int x;\n}\n";
+    String expect = "class T {\n\n  // asd\n\n  // dsa\n  int x;\n}\n";
     assertThat(output).isEqualTo(expect);
   }
 
@@ -231,7 +232,7 @@ public final class FormatterTest {
   public void badConstructor() throws FormatterException {
     String input = "class X { Y() {} }";
     String output = new Formatter().formatSource(input);
-    String expect = "class X {\n  Y() {}\n}\n";
+    String expect = "class X {\n\n  Y() {}\n}\n";
     assertThat(output).isEqualTo(expect);
   }
 
@@ -239,7 +240,7 @@ public final class FormatterTest {
   public void voidMethod() throws FormatterException {
     String input = "class X { void Y() {} }";
     String output = new Formatter().formatSource(input);
-    String expect = "class X {\n  void Y() {}\n}\n";
+    String expect = "class X {\n\n  void Y() {}\n}\n";
     assertThat(output).isEqualTo(expect);
   }
 
@@ -282,6 +283,7 @@ public final class FormatterTest {
             + "import java.util.List;\n"
             + "import javax.annotation.Nullable;\n\n"
             + "public class ExampleTest {\n"
+            + "\n"
             + "  @Nullable List<?> xs;\n"
             + "}\n";
     assertThat(output).isEqualTo(expect);
@@ -354,13 +356,13 @@ public final class FormatterTest {
   @Test
   public void testEmptyArray() throws Exception {
     assertThat(new Formatter().formatSource("class T { int x[] = {,}; }"))
-        .isEqualTo("class T {\n  int x[] = {,};\n}\n");
+        .isEqualTo("class T {\n\n  int x[] = {,};\n}\n");
   }
 
   @Test
   public void stringEscapeLength() throws Exception {
     assertThat(new Formatter().formatSource("class T {{ f(\"\\\"\"); }}"))
-        .isEqualTo("class T {\n  {\n    f(\"\\\"\");\n  }\n}\n");
+        .isEqualTo("class T {\n\n  {\n    f(\"\\\"\");\n  }\n}\n");
   }
 
   @Test
@@ -369,6 +371,7 @@ public final class FormatterTest {
             new Formatter()
                 .formatSource(
                     "class T {\n"
+                        + "\n"
                         + "  public static void main(String[] args) { // one long incredibly"
                         + " unbroken sentence moving from topic to topic so that no-one had a"
                         + " chance to interrupt;\n"
@@ -376,6 +379,7 @@ public final class FormatterTest {
                         + "}\n"))
         .isEqualTo(
             "class T {\n"
+                + "\n"
                 + "  public static void main(\n"
                 + "      String[]\n"
                 + "          args) { // one long incredibly unbroken sentence moving"
@@ -391,6 +395,7 @@ public final class FormatterTest {
             new Formatter()
                 .formatSource(
                     "class T {\n"
+                        + "\n"
                         + "  public static void main(String[] args) { // one_long_incredibly"
                         + "_unbroken_sentence_moving_from_topic_to_topic_so_that_no-one_had_a"
                         + "_chance_to_interrupt;\n"
@@ -398,6 +403,7 @@ public final class FormatterTest {
                         + "}\n"))
         .isEqualTo(
             "class T {\n"
+                + "\n"
                 + "  public static void main(\n"
                 + "      String[]\n"
                 + "          args) { // one_long_incredibly"
@@ -413,6 +419,7 @@ public final class FormatterTest {
             new Formatter()
                 .formatSource(
                     "class T {\n"
+                        + "\n"
                         + "  public static void main(String[] args) { //one_long_incredibly"
                         + "_unbroken_sentence_moving_from_topic_to_topic_so_that_no-one_had_a"
                         + "_chance_to_interrupt;\n"
@@ -420,6 +427,7 @@ public final class FormatterTest {
                         + "}\n"))
         .isEqualTo(
             "class T {\n"
+                + "\n"
                 + "  public static void main(\n"
                 + "      String[]\n"
                 + "          args) { // one_long_incredibly"
@@ -448,6 +456,7 @@ public final class FormatterTest {
             + "import a.A;\n"
             + "\n"
             + "class T {\n"
+            + "\n"
             + "  A a;\n"
             + "}\n";
     String withoutBlank =
@@ -457,6 +466,7 @@ public final class FormatterTest {
             + "import a.A;\n"
             + "\n"
             + "class T {\n"
+            + "\n"
             + "  A a;\n"
             + "}\n";
 
@@ -497,6 +507,7 @@ public final class FormatterTest {
             new Formatter()
                 .formatSource(
                     "class Foo {\n"
+                        + "\n"
                         + "  void f() {\n"
                         + "    int x = 0; // comment\t\t\t\n"
                         + "    return;\n"
@@ -504,6 +515,7 @@ public final class FormatterTest {
                         + "}\n"))
         .isEqualTo(
             "class Foo {\n"
+                + "\n"
                 + "  void f() {\n"
                 + "    int x = 0; // comment\n"
                 + "    return;\n"
