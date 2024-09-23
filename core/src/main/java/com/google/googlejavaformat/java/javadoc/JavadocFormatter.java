@@ -36,25 +36,23 @@ import java.util.regex.Pattern;
  */
 public final class JavadocFormatter {
 
-  static final int MAX_LINE_LENGTH = 100;
-
   /**
    * Formats the given Javadoc comment, which must start with ∕✱✱ and end with ✱∕. The output will
    * start and end with the same characters.
    */
-  public static String formatJavadoc(String input, int blockIndent) {
+  public static String formatJavadoc(String input, int maxWidth, int blockIndent) {
     ImmutableList<Token> tokens;
     try {
       tokens = lex(input);
     } catch (LexException e) {
       return input;
     }
-    String result = render(tokens, blockIndent);
-    return makeSingleLineIfPossible(blockIndent, result);
+    String result = render(tokens, maxWidth, blockIndent);
+    return makeSingleLineIfPossible(blockIndent, maxWidth, result);
   }
 
-  private static String render(List<Token> input, int blockIndent) {
-    JavadocWriter output = new JavadocWriter(blockIndent);
+  private static String render(List<Token> input, int maxWidth, int blockIndent) {
+    JavadocWriter output = new JavadocWriter(maxWidth, blockIndent);
     for (Token token : input) {
       switch (token.getType()) {
         case BEGIN_JAVADOC:
@@ -171,21 +169,21 @@ public final class JavadocFormatter {
    * Returns the given string or a one-line version of it (e.g., "∕✱✱ Tests for foos. ✱∕") if it
    * fits on one line.
    */
-  private static String makeSingleLineIfPossible(int blockIndent, String input) {
+  private static String makeSingleLineIfPossible(int blockIndent, int maxWidth, String input) {
     Matcher matcher = ONE_CONTENT_LINE_PATTERN.matcher(input);
     if (matcher.matches()) {
       String line = matcher.group(1);
       if (line.isEmpty()) {
         return "/** */";
-      } else if (oneLineJavadoc(line, blockIndent)) {
+      } else if (oneLineJavadoc(line, maxWidth, blockIndent)) {
         return "/** " + line + " */";
       }
     }
     return input;
   }
 
-  private static boolean oneLineJavadoc(String line, int blockIndent) {
-    int oneLinerContentLength = MAX_LINE_LENGTH - "/**  */".length() - blockIndent;
+  private static boolean oneLineJavadoc(String line, int maxWidth, int blockIndent) {
+    int oneLinerContentLength = maxWidth - "/**  */".length() - blockIndent;
     if (line.length() > oneLinerContentLength) {
       return false;
     }
