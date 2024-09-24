@@ -1,17 +1,8 @@
 class B21283374 {
 
   void f(
-      boolean flagA,
-      boolean flagB,
-      boolean flagC,
-      boolean flagD,
-      boolean flagE,
-      boolean flagF,
-      boolean flagG,
-      boolean flagH,
-      boolean flagI,
-      boolean flagJ,
-      boolean flagK) {}
+      boolean flagA, boolean flagB, boolean flagC, boolean flagD, boolean flagE, boolean flagF,
+      boolean flagG, boolean flagH, boolean flagI, boolean flagJ, boolean flagK) {}
 
   {
     f(
@@ -52,8 +43,7 @@ class B21283374 {
         /* paramName= */ false, thingy);
 
     f(
-        arg1, /* which arg is this attached to? */
-        arg2,
+        arg1, /* which arg is this attached to? */ arg2,
         arg3xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx);
 
     f(
@@ -62,8 +52,7 @@ class B21283374 {
         arg3xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx);
 
     f(
-        arg1, /* paramName1 */
-        arg2, /* paramName2 */
+        arg1, /* paramName1 */ arg2, /* paramName2 */
         arg3xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx);
   }
 }

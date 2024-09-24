@@ -552,30 +552,23 @@ public class JavaInputAstVisitor extends TreePathScanner<Void, Void> {
         }
         path = path.getParentPath();
       }
-      boolean shortItems = hasOnlyShortItems(expressions);
-      boolean allowFilledElementsOnOwnLine = shortItems || !inMemberValuePair;
 
       builder.open(plusTwo);
       tokenBreakTrailingComment("{", plusTwo);
       boolean hasTrailingComma = hasTrailingToken(builder.getInput(), expressions, ",");
       builder.breakOp(hasTrailingComma ? FillMode.FORCED : FillMode.UNIFIED, "", ZERO);
-      if (allowFilledElementsOnOwnLine) {
-        builder.open(ZERO);
-      }
+      builder.open(ZERO);
       boolean afterFirstToken = false;
-      FillMode fillMode = shortItems ? FillMode.INDEPENDENT : FillMode.UNIFIED;
       for (ExpressionTree expression : expressions) {
         if (afterFirstToken) {
           token(",");
-          builder.breakOp(fillMode, " ", ZERO);
+          builder.breakOp(FillMode.INDEPENDENT, " ", ZERO);
         }
         scan(expression, null);
         afterFirstToken = true;
       }
       builder.guessToken(",");
-      if (allowFilledElementsOnOwnLine) {
-        builder.close();
-      }
+      builder.close();
       builder.breakOp(minusTwo);
       builder.close();
       token("}", plusTwo);
@@ -1176,12 +1169,11 @@ public class JavaInputAstVisitor extends TreePathScanner<Void, Void> {
     List<ExpressionTree> operands = new ArrayList<>();
     List<String> operators = new ArrayList<>();
     walkInfix(precedence(node), node, operands, operators);
-    FillMode fillMode = hasOnlyShortItems(operands) ? INDEPENDENT : UNIFIED;
     builder.open(plusFour);
     scan(operands.get(0), null);
     int operatorsN = operators.size();
     for (int i = 0; i < operatorsN; i++) {
-      builder.breakOp(fillMode, " ", ZERO);
+      builder.breakOp(INDEPENDENT, " ", ZERO);
       builder.op(operators.get(i));
       builder.space();
       scan(operands.get(i + 1), null);
@@ -1717,7 +1709,7 @@ public class JavaInputAstVisitor extends TreePathScanner<Void, Void> {
       for (Tree typeArgument : node.getTypeArguments()) {
         if (afterFirstToken) {
           token(",");
-          builder.breakOp(" ");
+          builder.breakOp(INDEPENDENT, " ", ZERO);
         }
         scan(typeArgument, null);
         afterFirstToken = true;
@@ -2633,7 +2625,7 @@ public class JavaInputAstVisitor extends TreePathScanner<Void, Void> {
     for (int i = 0; i < parameters.size(); i++) {
       VariableTree parameter = parameters.get(i);
       if (afterFirstToken) {
-        builder.breakOp(" ");
+        builder.breakOp(INDEPENDENT, " ", ZERO);
       }
       visitToDeclare(
           DeclarationKind.PARAMETER,
@@ -3306,11 +3298,10 @@ public class JavaInputAstVisitor extends TreePathScanner<Void, Void> {
   private void argList(List<? extends ExpressionTree> arguments) {
     builder.open(ZERO);
     boolean afterFirstToken = false;
-    FillMode fillMode = hasOnlyShortItems(arguments) ? FillMode.INDEPENDENT : FillMode.UNIFIED;
     for (ExpressionTree argument : arguments) {
       if (afterFirstToken) {
         token(",");
-        builder.breakOp(fillMode, " ", ZERO);
+        builder.breakOp(INDEPENDENT, " ", ZERO);
       }
       scan(argument, null);
       afterFirstToken = true;

@@ -23,6 +23,7 @@ import static java.util.stream.Collectors.joining;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Strings;
 import com.google.common.base.Verify;
+import com.google.common.collect.BoundType;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Range;
@@ -91,6 +92,25 @@ public final class StringWrapper {
     }
 
     String result = applyReplacements(input, replacements);
+
+    // reformat affected ranges
+    var newRanges = new ArrayList<Range<Integer>>();
+    int delta = 0;
+    for (var entry : replacements.asMapOfRanges().entrySet()) {
+      if (!(entry.getKey().lowerBoundType().equals(BoundType.CLOSED)
+          && entry.getKey().upperBoundType().equals(BoundType.OPEN))) {
+        throw new FormatterException("#NOT_IMPLEMENTED");
+      }
+      var newRange =
+          Range.closedOpen(
+              entry.getKey().lowerEndpoint() + delta,
+              entry.getKey().lowerEndpoint() + delta + entry.getValue().length());
+      newRanges.add(newRange);
+      delta +=
+          entry.getValue().length()
+              - (entry.getKey().upperEndpoint() - entry.getKey().lowerEndpoint());
+    }
+    result = formatter.formatSource(result, newRanges);
 
     {
       // We really don't want bugs in this pass to change the behaviour of programs we're
