@@ -3,8 +3,7 @@
     owner = "mathp",
     demoLink = "unspecified",
     modules = {
-      BackendsModule.class,
-      CommonBackendsModule.class,
+      BackendsModule.class, CommonBackendsModule.class,
       ChromeSuggestionsPlugin.ChromeSuggestionsModule.class
     })
 @Module(library = true, complete = false)
@@ -16,19 +15,13 @@
     library = true,
     complete = false,
     injects = {
-      ClassInfoTracker.class,
-      JslayoutMetaProto.class,
-      JslayoutMetaProto.class,
-      JslayoutMeta.class
+      ClassInfoTracker.class, JslayoutMetaProto.class, JslayoutMetaProto.class, JslayoutMeta.class
     })
 @Module(
     library = true,
     complete = false,
     injects = {
-      ClassInfoTracker.class,
-      JslayoutMetaProto.class,
-      JslayoutMetaProto.class,
-      JslayoutMeta.class,
+      ClassInfoTracker.class, JslayoutMetaProto.class, JslayoutMetaProto.class, JslayoutMeta.class,
       JslayoutMeta.class
     })
 @Module(
@@ -53,16 +46,10 @@
     })
 @Module({ClassInfoTracker.class, JslayoutMetaProto.class, JslayoutMetaProto.class})
 @Module({
-  ClassInfoTracker.class,
-  JslayoutMetaProto.class,
-  JslayoutMetaProto.class,
-  JslayoutMeta.class
+  ClassInfoTracker.class, JslayoutMetaProto.class, JslayoutMetaProto.class, JslayoutMeta.class
 })
 @Module({
-  ClassInfoTracker.class,
-  JslayoutMetaProto.class,
-  JslayoutMetaProto.class,
-  JslayoutMeta.class,
+  ClassInfoTracker.class, JslayoutMetaProto.class, JslayoutMetaProto.class, JslayoutMeta.class,
   JslayoutMeta.class
 })
 class B21608216 {}

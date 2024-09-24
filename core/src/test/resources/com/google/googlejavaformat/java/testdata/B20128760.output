@@ -26,12 +26,10 @@ class B20128760 {
 
     XXxxxx<Xxxx, XxxxxxxXxxxxxxxxxxXxxxxxxxx> xxxxxxxxxXxxXxxXxXxxxxxxxXx =
         XX.xxxxXxxXxxx2(
-                "XxxxXxxxxxxxXxxxXxxxXxxxxxxxXxxxXxxXxxxxxxXxxxxxxxx",
-                xxxxxxxxXxxxXxXxxxxxxxXx,
+                "XxxxXxxxxxxxXxxxXxxxXxxxxxxxXxxxXxxXxxxxxxXxxxxxxxx", xxxxxxxxXxxxXxXxxxxxxxXx,
                 xxxxxxxxXxxxXxxxxXxxxXxXxxxxxxxXx)
             .xxxxxxxxXx(
-                "XxxxxxxxXxxxxxxxxXxx",
-                xxxxxxxxXxxxxxxxxXxxXx,
+                "XxxxxxxxXxxxxxxxxXxx", xxxxxxxxXxxxxxxxxXxxXx,
                 XX.xxxxxXx(XX.xxxxx(), XX.xxxxxx(XxxxxxxXxxxxxxxxxxXxxxxxxxx.xxxxx)));
 
     xxXxxxxxxxXxxxXxxx =
@@ -83,8 +81,7 @@ class B20128760 {
   public class Foo
       extends Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
       implements Xxxxxxxxxxxxx<
-              Xxxxxxxxxxxxxxxxxxxxxxxxxxxxx,
-              Xxxxxxxxxxxxxxxxxxxxxxxxxxxxx,
+              Xxxxxxxxxxxxxxxxxxxxxxxxxxxxx, Xxxxxxxxxxxxxxxxxxxxxxxxxxxxx,
               Xxxxxxxxxxxxxxxxxxxxxxxxxxxxx>,
           Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx {}
 

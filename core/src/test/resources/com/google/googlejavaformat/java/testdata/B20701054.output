@@ -81,9 +81,7 @@ class B20701054 {
 
     analysis()
         .analyze(
-            compilationUnit,
-            context,
-            configuration,
+            compilationUnit, context, configuration,
             new DescriptionListener() {
 
               @Override

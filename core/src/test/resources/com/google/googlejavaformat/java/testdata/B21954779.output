@@ -2,9 +2,7 @@ class B21954779 {
 
   {
     when(computeApi.findOrCreateVm(
-            VM_METADATA,
-            Optional.<InstanceProto>absent(),
-            AssignReservedIp.YES,
+            VM_METADATA, Optional.<InstanceProto>absent(), AssignReservedIp.YES,
             AttachDataDisk.YES))
         .thenReturn(OPERATION);
 
