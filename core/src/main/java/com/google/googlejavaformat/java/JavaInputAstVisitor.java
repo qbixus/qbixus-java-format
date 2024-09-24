@@ -890,7 +890,7 @@ public class JavaInputAstVisitor extends TreePathScanner<Void, Void> {
       }
     } else {
       builder.open(plusTwo);
-      builder.blankLineWanted(BlankLineWanted.NO);
+      builder.blankLineWanted(BlankLineWanted.YES);
       builder.forcedBreak();
       builder.open(ZERO);
       boolean afterFirstToken = false;

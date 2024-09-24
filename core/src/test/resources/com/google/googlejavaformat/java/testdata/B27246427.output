@@ -1,4 +1,5 @@
 enum TrailingComment {
+
   /** foo */
   FOO,
   /** bar */
