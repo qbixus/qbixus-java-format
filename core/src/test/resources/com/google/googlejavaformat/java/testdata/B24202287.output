@@ -25,12 +25,8 @@ class B24202287 {
 
   {
     mTabUiParts[mRenderedTabIndex].setData(
-        tabs[mRenderedTabIndex],
-        true /* isSelected */,
-        mIsLoadingState,
-        mErrorMessageType,
-        mOnDailySummaryHeaderClickListener,
-        mShowSpacerForSnackbar,
+        tabs[mRenderedTabIndex], true /* isSelected */, mIsLoadingState, mErrorMessageType,
+        mOnDailySummaryHeaderClickListener, mShowSpacerForSnackbar,
         mResetScrollAndAnimationAndReplaceDoodle);
   }
 }

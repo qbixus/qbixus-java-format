@@ -50,79 +50,19 @@ class M {
 
   /** JavaDoc. */
   void methodName4(
-      int a,
-      int b,
-      int c,
-      int d,
-      int e,
-      int f,
-      int g,
-      int h,
-      int i,
-      int j,
-      int k,
-      int l,
-      int m,
-      int n,
-      int o,
-      int p,
-      int q,
-      int r,
-      int s,
-      int t,
-      int u,
-      int v) {}
+      int a, int b, int c, int d, int e, int f, int g, int h, int i, int j, int k, int l, int m,
+      int n, int o, int p, int q, int r, int s, int t, int u, int v) {}
 
   /** JavaDoc. */
   void methodName5(
-      int a,
-      int b,
-      int c,
-      int d,
-      int e,
-      int f,
-      int g,
-      int h,
-      int i,
-      int j,
-      int k,
-      int l,
-      int m,
-      int n,
-      int o,
-      int p,
-      int q,
-      int r,
-      int s,
-      int t,
-      int u,
-      int v)
+      int a, int b, int c, int d, int e, int f, int g, int h, int i, int j, int k, int l, int m,
+      int n, int o, int p, int q, int r, int s, int t, int u, int v)
       throws Exception {}
 
   /** JavaDoc. */
   void methodName6(
-      int a,
-      int b,
-      int c,
-      int d,
-      int e,
-      int f,
-      int g,
-      int h,
-      int i,
-      int j,
-      int k,
-      int l,
-      int m,
-      int n,
-      int o,
-      int p,
-      int q,
-      int r,
-      int s,
-      int t,
-      int u,
-      int v)
+      int a, int b, int c, int d, int e, int f, int g, int h, int i, int j, int k, int l, int m,
+      int n, int o, int p, int q, int r, int s, int t, int u, int v)
       throws Exception0,
           Exception1,
           Exception2,
@@ -169,28 +109,8 @@ class M {
           Pair<Pair<Pair<T, T>, Pair<T, T>>, Pair<Pair<T, T>, Pair<T, T>>>,
           Pair<Pair<Pair<T, T>, Pair<T, T>>, Pair<Pair<T, T>, Pair<T, T>>>>
       methodName15(
-          int a,
-          int b,
-          int c,
-          int d,
-          int e,
-          int f,
-          int g,
-          int h,
-          int i,
-          int j,
-          int k,
-          int l,
-          int m,
-          int n,
-          int o,
-          int p,
-          int q,
-          int r,
-          int s,
-          int t,
-          int u,
-          int v) {
+          int a, int b, int c, int d, int e, int f, int g, int h, int i, int j, int k, int l, int m,
+          int n, int o, int p, int q, int r, int s, int t, int u, int v) {
     return null;
   }
 
@@ -198,28 +118,8 @@ class M {
           Pair<Pair<Pair<T, T>, Pair<T, T>>, Pair<Pair<T, T>, Pair<T, T>>>,
           Pair<Pair<Pair<T, T>, Pair<T, T>>, Pair<Pair<T, T>, Pair<T, T>>>>
       methodName14(
-          int a,
-          int b,
-          int c,
-          int d,
-          int e,
-          int f,
-          int g,
-          int h,
-          int i,
-          int j,
-          int k,
-          int l,
-          int m,
-          int n,
-          int o,
-          int p,
-          int q,
-          int r,
-          int s,
-          int t,
-          int u,
-          int v)
+          int a, int b, int c, int d, int e, int f, int g, int h, int i, int j, int k, int l, int m,
+          int n, int o, int p, int q, int r, int s, int t, int u, int v)
           throws Exception {
     return null;
   }
@@ -228,28 +128,8 @@ class M {
           Pair<Pair<Pair<T, T>, Pair<T, T>>, Pair<Pair<T, T>, Pair<T, T>>>,
           Pair<Pair<Pair<T, T>, Pair<T, T>>, Pair<Pair<T, T>, Pair<T, T>>>>
       methodName13(
-          int a,
-          int b,
-          int c,
-          int d,
-          int e,
-          int f,
-          int g,
-          int h,
-          int i,
-          int j,
-          int k,
-          int l,
-          int m,
-          int n,
-          int o,
-          int p,
-          int q,
-          int r,
-          int s,
-          int t,
-          int u,
-          int v)
+          int a, int b, int c, int d, int e, int f, int g, int h, int i, int j, int k, int l, int m,
+          int n, int o, int p, int q, int r, int s, int t, int u, int v)
           throws Exception0,
               Exception1,
               Exception2,
@@ -418,28 +298,8 @@ class M {
           T30,
           T31>
       T methodName22(
-          int a,
-          int b,
-          int c,
-          int d,
-          int e,
-          int f,
-          int g,
-          int h,
-          int i,
-          int j,
-          int k,
-          int l,
-          int m,
-          int n,
-          int o,
-          int p,
-          int q,
-          int r,
-          int s,
-          int t,
-          int u,
-          int v) {
+          int a, int b, int c, int d, int e, int f, int g, int h, int i, int j, int k, int l, int m,
+          int n, int o, int p, int q, int r, int s, int t, int u, int v) {
     return null;
   }
 
@@ -477,28 +337,8 @@ class M {
           T30,
           T31>
       T methodName23(
-          int a,
-          int b,
-          int c,
-          int d,
-          int e,
-          int f,
-          int g,
-          int h,
-          int i,
-          int j,
-          int k,
-          int l,
-          int m,
-          int n,
-          int o,
-          int p,
-          int q,
-          int r,
-          int s,
-          int t,
-          int u,
-          int v)
+          int a, int b, int c, int d, int e, int f, int g, int h, int i, int j, int k, int l, int m,
+          int n, int o, int p, int q, int r, int s, int t, int u, int v)
           throws Exception {
     return null;
   }
@@ -537,28 +377,8 @@ class M {
           T30,
           T31>
       T methodName30(
-          int a,
-          int b,
-          int c,
-          int d,
-          int e,
-          int f,
-          int g,
-          int h,
-          int i,
-          int j,
-          int k,
-          int l,
-          int m,
-          int n,
-          int o,
-          int p,
-          int q,
-          int r,
-          int s,
-          int t,
-          int u,
-          int v)
+          int a, int b, int c, int d, int e, int f, int g, int h, int i, int j, int k, int l, int m,
+          int n, int o, int p, int q, int r, int s, int t, int u, int v)
           throws Exception0,
               Exception1,
               Exception2,
@@ -739,28 +559,8 @@ class M {
               Pair<Pair<Pair<T, T>, Pair<T, T>>, Pair<Pair<T, T>, Pair<T, T>>>,
               Pair<Pair<Pair<T, T>, Pair<T, T>>, Pair<Pair<T, T>, Pair<T, T>>>>
           methodName41(
-              int a,
-              int b,
-              int c,
-              int d,
-              int e,
-              int f,
-              int g,
-              int h,
-              int i,
-              int j,
-              int k,
-              int l,
-              int m,
-              int n,
-              int o,
-              int p,
-              int q,
-              int r,
-              int s,
-              int t,
-              int u,
-              int v) {
+              int a, int b, int c, int d, int e, int f, int g, int h, int i, int j, int k, int l,
+              int m, int n, int o, int p, int q, int r, int s, int t, int u, int v) {
     return null;
   }
 
@@ -801,28 +601,8 @@ class M {
               Pair<Pair<Pair<T, T>, Pair<T, T>>, Pair<Pair<T, T>, Pair<T, T>>>,
               Pair<Pair<Pair<T, T>, Pair<T, T>>, Pair<Pair<T, T>, Pair<T, T>>>>
           methodName40(
-              int a,
-              int b,
-              int c,
-              int d,
-              int e,
-              int f,
-              int g,
-              int h,
-              int i,
-              int j,
-              int k,
-              int l,
-              int m,
-              int n,
-              int o,
-              int p,
-              int q,
-              int r,
-              int s,
-              int t,
-              int u,
-              int v)
+              int a, int b, int c, int d, int e, int f, int g, int h, int i, int j, int k, int l,
+              int m, int n, int o, int p, int q, int r, int s, int t, int u, int v)
               throws Exception {
     return null;
   }
@@ -864,28 +644,8 @@ class M {
               Pair<Pair<Pair<T, T>, Pair<T, T>>, Pair<Pair<T, T>, Pair<T, T>>>,
               Pair<Pair<Pair<T, T>, Pair<T, T>>, Pair<Pair<T, T>, Pair<T, T>>>>
           methodName(
-              int a,
-              int b,
-              int c,
-              int d,
-              int e,
-              int f,
-              int g,
-              int h,
-              int i,
-              int j,
-              int k,
-              int l,
-              int m,
-              int n,
-              int o,
-              int p,
-              int q,
-              int r,
-              int s,
-              int t,
-              int u,
-              int v)
+              int a, int b, int c, int d, int e, int f, int g, int h, int i, int j, int k, int l,
+              int m, int n, int o, int p, int q, int r, int s, int t, int u, int v)
               throws Exception0,
                   Exception1,
                   Exception2,
@@ -973,16 +733,8 @@ class M {
         "two", 1 + 1,
         "three", 1 + 1 + 1);
     method999(
-        "xxxxxxxxxxxxxx",
-        "xxxxxxxxxxxxxx",
-        "xxxxxxxxxxxxxx",
-        "xxxxxxxxxxxxxx",
-        "xxxxxxxxxxxxxx",
-        "xxxxxxxxxxxxxx",
-        "xxxxxxxxxxxxxx",
-        "xxxxxxxxxxxxxx",
-        "xxxxxxxxxxxxxx",
-        "xxxxxxxxxxxxxx",
+        "xxxxxxxxxxxxxx", "xxxxxxxxxxxxxx", "xxxxxxxxxxxxxx", "xxxxxxxxxxxxxx", "xxxxxxxxxxxxxx",
+        "xxxxxxxxxxxxxx", "xxxxxxxxxxxxxx", "xxxxxxxxxxxxxx", "xxxxxxxxxxxxxx", "xxxxxxxxxxxxxx",
         "xxxxxxxxxxxxxx");
   }
 
@@ -1068,16 +820,8 @@ class M {
           XXXXXXXXXX,
           XXXXXXXXXX>
       M(
-          ZZZZZZZZZZ z,
-          ZZZZZZZZZZ z,
-          ZZZZZZZZZZ z,
-          ZZZZZZZZZZ z,
-          ZZZZZZZZZZ z,
-          ZZZZZZZZZZ z,
-          ZZZZZZZZZZ z,
-          ZZZZZZZZZZ z,
-          ZZZZZZZZZZ z,
-          ZZZZZZZZZZ z)
+          ZZZZZZZZZZ z, ZZZZZZZZZZ z, ZZZZZZZZZZ z, ZZZZZZZZZZ z, ZZZZZZZZZZ z, ZZZZZZZZZZ z,
+          ZZZZZZZZZZ z, ZZZZZZZZZZ z, ZZZZZZZZZZ z, ZZZZZZZZZZ z)
           throws EEEEEEEEEE,
               EEEEEEEEEE,
               EEEEEEEEEE,
