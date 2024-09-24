@@ -25,6 +25,7 @@ import com.google.common.collect.DiscreteDomain;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Range;
 import com.google.googlejavaformat.Output.BreakTag;
+import com.google.googlejavaformat.java.Formatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -256,6 +257,7 @@ public abstract class Doc {
         oneLine = true;
         return state.withColumn(state.column + thisWidth);
       }
+      maxWidth = Formatter.restartMaxWidth(state.indent + plusIndent.eval());
       State broken =
           computeBroken(
               commentsHelper, maxWidth, new State(state.indent + plusIndent.eval(), state.column));
