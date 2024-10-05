@@ -20,17 +20,17 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>com.google.googlejavaformat</groupId>
+    <groupId>com.github.qbixus.googlejavaformat</groupId>
     <artifactId>google-java-format-parent</artifactId>
   <version>HEAD-SNAPSHOT</version>
   </parent>
 
   <artifactId>google-java-format</artifactId>
 
-  <name>Google Java Format</name>
+  <name>Google Java Format (qbixus style)</name>
 
   <description>
-    A Java source code formatter that follows Google Java Style.
+    A Java source code formatter that follows Google Java Style (qbixus style).
   </description>
 
   <dependencies>
