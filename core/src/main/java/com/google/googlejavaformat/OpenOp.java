@@ -24,9 +24,11 @@ import com.google.common.base.MoreObjects;
  */
 public final class OpenOp implements Op {
   private final Indent plusIndent;
+  private final int orderOrKind;
 
-  private OpenOp(Indent plusIndent) {
+  private OpenOp(Indent plusIndent, int orderOrKind) {
     this.plusIndent = plusIndent;
+    this.orderOrKind = orderOrKind;
   }
 
   /**
@@ -36,7 +38,27 @@ public final class OpenOp implements Op {
    * @return the {@code OpenOp}
    */
   public static Op make(Indent plusIndent) {
-    return new OpenOp(plusIndent);
+    return new OpenOp(plusIndent, -1);
+  }
+
+  public static Op makeGroup(Indent plusIndent) {
+    return new OpenOp(plusIndent, -2);
+  }
+
+  public static Op makeGroupItem(Indent plusIndent, int order) {
+    return new OpenOp(plusIndent, order);
+  }
+
+  public boolean isGroup() {
+    return orderOrKind == -2;
+  }
+
+  public boolean isGroupItem() {
+    return orderOrKind >= 0;
+  }
+
+  public int order() {
+    return orderOrKind;
   }
 
   @Override

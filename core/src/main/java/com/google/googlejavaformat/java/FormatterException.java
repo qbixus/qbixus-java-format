@@ -44,6 +44,12 @@ public final class FormatterException extends Exception {
     this.diagnostics = ImmutableList.copyOf(diagnostics);
   }
 
+  public FormatterException(Iterable<FormatterDiagnostic> diagnostics, Throwable cause) {
+    super(diagnostics.iterator().next().toString(), cause);
+    this.diagnostics = ImmutableList.copyOf(diagnostics);
+  }
+
+
   public List<FormatterDiagnostic> diagnostics() {
     return diagnostics;
   }

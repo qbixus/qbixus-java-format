@@ -28,8 +28,11 @@ import com.google.googlejavaformat.Indent.Const;
 import com.google.googlejavaformat.Input.Tok;
 import com.google.googlejavaformat.Input.Token;
 import com.google.googlejavaformat.Output.BreakTag;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -38,7 +41,9 @@ import java.util.Optional;
  */
 public final class OpsBuilder {
 
-  /** @return the actual size of the AST node at position, including comments. */
+  /**
+   * @return the actual size of the AST node at position, including comments.
+   */
   public int actualSize(int position, int length) {
     Token startToken = input.getPositionTokenMap().get(position);
     int start = startToken.getTok().getPosition();
@@ -57,7 +62,9 @@ public final class OpsBuilder {
     return end - start;
   }
 
-  /** @return the start column of the token at {@code position}, including leading comments. */
+  /**
+   * @return the start column of the token at {@code position}, including leading comments.
+   */
   public Integer actualStartColumn(int position) {
     Token startToken = input.getPositionTokenMap().get(position);
     int start = startToken.getTok().getPosition();
@@ -264,6 +271,14 @@ public final class OpsBuilder {
     add(OpenOp.make(plusIndent));
   }
 
+  public final void openOrdered() {
+    add(OpenOp.makeGroup(ZERO));
+  }
+
+  public final void openOrderedItem(int order) {
+    add(OpenOp.makeGroupItem(ZERO, order));
+  }
+
   /** Close the current level, by emitting a {@link CloseOp}. */
   public final void close() {
     add(CloseOp.make());
@@ -316,7 +331,7 @@ public final class OpsBuilder {
         token,
         Doc.Token.RealOrImaginary.IMAGINARY,
         ZERO,
-        /* breakAndIndentTrailingComment=  */ Optional.empty());
+        /* breakAndIndentTrailingComment= */ Optional.empty());
   }
 
   public final void token(
@@ -359,7 +374,7 @@ public final class OpsBuilder {
           op.substring(i, i + 1),
           Doc.Token.RealOrImaginary.REAL,
           ZERO,
-          /* breakAndIndentTrailingComment=  */ Optional.empty());
+          /* breakAndIndentTrailingComment= */ Optional.empty());
     }
   }
 
@@ -427,7 +442,7 @@ public final class OpsBuilder {
    * @param plusIndent extra indent if taken
    */
   public final void breakOp(Doc.FillMode fillMode, String flat, Indent plusIndent) {
-    breakOp(fillMode, flat, plusIndent, /* optionalTag=  */ Optional.empty());
+    breakOp(fillMode, flat, plusIndent, /* optionalTag= */ Optional.empty());
   }
 
   /**
@@ -490,149 +505,230 @@ public final class OpsBuilder {
    */
   public final ImmutableList<Op> build() {
     markForPartialFormat();
-    // Rewrite the ops to insert comments.
-    Multimap<Integer, Op> tokOps = ArrayListMultimap.create();
-    int opsN = ops.size();
-    for (int i = 0; i < opsN; i++) {
-      Op op = ops.get(i);
-      if (op instanceof Doc.Token) {
-        /*
-         * Token ops can have associated non-tokens, including comments, which we need to insert.
-         * They can also cause line breaks, so we insert them before or after the current level,
-         * when possible.
-         */
-        Doc.Token tokenOp = (Doc.Token) op;
-        Input.Token token = tokenOp.getToken();
-        int j = i; // Where to insert toksBefore before.
-        while (0 < j && ops.get(j - 1) instanceof OpenOp) {
-          --j;
-        }
-        int k = i; // Where to insert toksAfter after.
-        while (k + 1 < opsN && ops.get(k + 1) instanceof CloseOp) {
-          ++k;
-        }
-        if (tokenOp.realOrImaginary().isReal()) {
+
+    ImmutableList<Op> result;
+
+    if (false) {
+      // Rewrite the ops to insert comments.
+      Multimap<Integer, Op> tokOps = ArrayListMultimap.create();
+      int opsN = ops.size();
+      for (int i = 0; i < opsN; i++) {
+        Op op = ops.get(i);
+        if (op instanceof Doc.Token) {
           /*
-           * Regular input token. Copy out toksBefore before token, and toksAfter after it. Insert
-           * this token's toksBefore at position j.
+           * Token ops can have associated non-tokens, including comments, which we need to insert.
+           * They can also cause line breaks, so we insert them before or after the current level,
+           * when possible.
            */
-          int newlines = 0; // Count of newlines in a row.
-          boolean space = false; // Do we need an extra space after a previous "/*" comment?
-          boolean lastWasComment = false; // Was the last thing we output a comment?
-          boolean allowBlankAfterLastComment = false;
-          for (Input.Tok tokBefore : token.getToksBefore()) {
-            if (tokBefore.isNewline()) {
-              newlines++;
-            } else if (tokBefore.isComment()) {
-              tokOps.put(
-                  j,
-                  Doc.Break.make(
-                      tokBefore.isSlashSlashComment() ? Doc.FillMode.FORCED : Doc.FillMode.UNIFIED,
-                      "",
-                      tokenOp.getPlusIndentCommentsBefore()));
-              tokOps.putAll(j, makeComment(tokBefore));
-              space = tokBefore.isSlashStarComment();
-              newlines = 0;
-              lastWasComment = true;
-              if (tokBefore.isJavadocComment()) {
-                tokOps.put(j, Doc.Break.makeForced());
-              }
-              allowBlankAfterLastComment =
-                  tokBefore.isSlashSlashComment()
-                      || (tokBefore.isSlashStarComment() && !tokBefore.isJavadocComment());
-            }
+          Doc.Token tokenOp = (Doc.Token) op;
+          Input.Token token = tokenOp.getToken();
+          int j = i; // Where to insert toksBefore before.
+          while (0 < j && ops.get(j - 1) instanceof OpenOp) {
+            --j;
           }
-          if (allowBlankAfterLastComment && newlines > 1) {
-            // Force a line break after two newlines in a row following a line or block comment
-            output.blankLine(token.getTok().getIndex(), BlankLineWanted.YES);
+          int k = i; // Where to insert toksAfter after.
+          while (k + 1 < opsN && ops.get(k + 1) instanceof CloseOp) {
+            ++k;
           }
-          if (lastWasComment && newlines > 0) {
-            tokOps.put(j, Doc.Break.makeForced());
-          } else if (space) {
-            tokOps.put(j, SPACE);
-          }
-          // Now we've seen the Token; output the toksAfter.
-          for (Input.Tok tokAfter : token.getToksAfter()) {
-            if (tokAfter.isComment()) {
-              boolean breakAfter =
-                  tokAfter.isJavadocComment()
-                      || (tokAfter.isSlashStarComment()
-                          && tokenOp.breakAndIndentTrailingComment().isPresent());
-              if (breakAfter) {
+          if (tokenOp.realOrImaginary().isReal()) {
+            /*
+             * Regular input token. Copy out toksBefore before token, and toksAfter after it. Insert
+             * this token's toksBefore at position j.
+             */
+            int newlines = 0; // Count of newlines in a row.
+            boolean space = false; // Do we need an extra space after a previous "/*" comment?
+            boolean lastWasComment = false; // Was the last thing we output a comment?
+            boolean allowBlankAfterLastComment = false;
+            for (Input.Tok tokBefore : token.getToksBefore()) {
+              if (tokBefore.isNewline()) {
+                newlines++;
+              } else if (tokBefore.isComment()) {
                 tokOps.put(
-                    k + 1,
+                    j,
                     Doc.Break.make(
-                        Doc.FillMode.FORCED,
+                        tokBefore.isSlashSlashComment()
+                            ? Doc.FillMode.FORCED
+                            : Doc.FillMode.UNIFIED,
                         "",
-                        tokenOp.breakAndIndentTrailingComment().orElse(Const.ZERO)));
-              } else {
-                tokOps.put(k + 1, SPACE);
-              }
-              tokOps.putAll(k + 1, makeComment(tokAfter));
-              if (breakAfter) {
-                tokOps.put(k + 1, Doc.Break.make(Doc.FillMode.FORCED, "", ZERO));
+                        tokenOp.getPlusIndentCommentsBefore()));
+                tokOps.putAll(j, makeComment(tokBefore));
+                space = tokBefore.isSlashStarComment();
+                newlines = 0;
+                lastWasComment = true;
+                if (tokBefore.isJavadocComment()) {
+                  tokOps.put(j, Doc.Break.makeForced());
+                }
+                allowBlankAfterLastComment =
+                    tokBefore.isSlashSlashComment()
+                        || (tokBefore.isSlashStarComment() && !tokBefore.isJavadocComment());
               }
             }
-          }
-        } else {
-          /*
-           * This input token was mistakenly not generated for output. As no whitespace or comments
-           * were generated (presumably), copy all input non-tokens literally, even spaces and
-           * newlines.
-           */
-          int newlines = 0;
-          boolean lastWasComment = false;
-          for (Input.Tok tokBefore : token.getToksBefore()) {
-            if (tokBefore.isNewline()) {
-              newlines++;
-            } else if (tokBefore.isComment()) {
-              newlines = 0;
-              lastWasComment = tokBefore.isComment();
+            if (allowBlankAfterLastComment && newlines > 1) {
+              // Force a line break after two newlines in a row following a line or block comment
+              output.blankLine(token.getTok().getIndex(), BlankLineWanted.YES);
             }
             if (lastWasComment && newlines > 0) {
               tokOps.put(j, Doc.Break.makeForced());
+            } else if (space) {
+              tokOps.put(j, SPACE);
             }
-            tokOps.put(j, Doc.Tok.make(tokBefore));
-          }
-          for (Input.Tok tokAfter : token.getToksAfter()) {
-            tokOps.put(k + 1, Doc.Tok.make(tokAfter));
+            // Now we've seen the Token; output the toksAfter.
+            for (Input.Tok tokAfter : token.getToksAfter()) {
+              if (tokAfter.isComment()) {
+                boolean breakAfter =
+                    tokAfter.isJavadocComment()
+                        || (tokAfter.isSlashStarComment()
+                            && tokenOp.breakAndIndentTrailingComment().isPresent());
+                if (breakAfter) {
+                  tokOps.put(
+                      k + 1,
+                      Doc.Break.make(
+                          Doc.FillMode.FORCED,
+                          "",
+                          tokenOp.breakAndIndentTrailingComment().orElse(Const.ZERO)));
+                } else {
+                  tokOps.put(k + 1, SPACE);
+                }
+                tokOps.putAll(k + 1, makeComment(tokAfter));
+                if (breakAfter) {
+                  tokOps.put(k + 1, Doc.Break.make(Doc.FillMode.FORCED, "", ZERO));
+                }
+              }
+            }
+          } else {
+            /*
+             * This input token was mistakenly not generated for output. As no whitespace or comments
+             * were generated (presumably), copy all input non-tokens literally, even spaces and
+             * newlines.
+             */
+            int newlines = 0;
+            boolean lastWasComment = false;
+            for (Input.Tok tokBefore : token.getToksBefore()) {
+              if (tokBefore.isNewline()) {
+                newlines++;
+              } else if (tokBefore.isComment()) {
+                newlines = 0;
+                lastWasComment = tokBefore.isComment();
+              }
+              if (lastWasComment && newlines > 0) {
+                tokOps.put(j, Doc.Break.makeForced());
+              }
+              tokOps.put(j, Doc.Tok.make(tokBefore));
+            }
+            for (Input.Tok tokAfter : token.getToksAfter()) {
+              tokOps.put(k + 1, Doc.Tok.make(tokAfter));
+            }
           }
         }
       }
-    }
-    /*
-     * Construct new list of ops, splicing in the comments. If a comment is inserted immediately
-     * before a space, suppress the space.
-     */
-    ImmutableList.Builder<Op> newOps = ImmutableList.builder();
-    boolean afterForcedBreak = false; // Was the last Op a forced break? If so, suppress spaces.
-    for (int i = 0; i < opsN; i++) {
-      for (Op op : tokOps.get(i)) {
+      /*
+       * Construct new list of ops, splicing in the comments. If a comment is inserted immediately
+       * before a space, suppress the space.
+       */
+      ImmutableList.Builder<Op> newOps = ImmutableList.builder();
+      boolean afterForcedBreak = false; // Was the last Op a forced break? If so, suppress spaces.
+      for (int i = 0; i < opsN; i++) {
+        for (Op op : tokOps.get(i)) {
+          if (!(afterForcedBreak && op instanceof Doc.Space)) {
+            newOps.add(op);
+            afterForcedBreak = isForcedBreak(op);
+          }
+        }
+        Op op = ops.get(i);
+        if (afterForcedBreak
+            && (op instanceof Doc.Space
+                || (op instanceof Doc.Break
+                    && ((Doc.Break) op).getPlusIndent() == 0
+                    && " ".equals(((Doc) op).getFlat())))) {
+          continue;
+        }
+        newOps.add(op);
+        if (!(op instanceof OpenOp)) {
+          afterForcedBreak = isForcedBreak(op);
+        }
+      }
+      for (Op op : tokOps.get(opsN)) {
         if (!(afterForcedBreak && op instanceof Doc.Space)) {
           newOps.add(op);
           afterForcedBreak = isForcedBreak(op);
         }
       }
-      Op op = ops.get(i);
-      if (afterForcedBreak
-          && (op instanceof Doc.Space
-              || (op instanceof Doc.Break
-                  && ((Doc.Break) op).getPlusIndent() == 0
-                  && " ".equals(((Doc) op).getFlat())))) {
-        continue;
-      }
-      newOps.add(op);
-      if (!(op instanceof OpenOp)) {
-        afterForcedBreak = isForcedBreak(op);
+      result = newOps.build();
+    } else {
+      result = ImmutableList.copyOf(ops);
+    }
+
+    //  Sort items in ops. Assume the structure is correct.
+
+    class Context {
+      final int depth;
+      final ImmutableList.Builder<Op> parent;
+      final Map<Integer, ImmutableList.Builder<Op>> items;
+
+      public Context(
+          int depth,
+          ImmutableList.Builder<Op> parent,
+          Map<Integer, ImmutableList.Builder<Op>> items) {
+        this.depth = depth;
+        this.parent = parent;
+        this.items = items;
       }
     }
-    for (Op op : tokOps.get(opsN)) {
-      if (!(afterForcedBreak && op instanceof Doc.Space)) {
-        newOps.add(op);
-        afterForcedBreak = isForcedBreak(op);
+
+    var sortedOps = ImmutableList.<Op>builder();
+    var bbb = new ArrayDeque<Context>();
+    var target = sortedOps;
+    int depth = 0;
+    for (int i = 0; i < result.size(); ++i) {
+      var op = result.get(i);
+      if (op instanceof OpenOp) {
+        var openOp = (OpenOp) op;
+        ++depth;
+        if (openOp.isGroup()) {
+          assert target != null;
+          bbb.push(new Context(depth, target, new HashMap<>()));
+          target.add(openOp);
+          target = null;
+        } else if (openOp.isGroupItem()) {
+          assert depth == (bbb.getFirst().depth + 1);
+          target = ImmutableList.builder();
+          bbb.getFirst().items.put(openOp.order(), target);
+          target.add(openOp);
+        } else {
+          assert bbb.isEmpty() || (depth > (bbb.getFirst().depth + 1));
+          target.add(openOp);
+        }
+      } else if (op instanceof CloseOp) {
+        var closeOp = (CloseOp) op;
+        if (!bbb.isEmpty() && depth == bbb.getFirst().depth) {
+          //  CloseGroupOp
+          var ctx = bbb.pop();
+          target = ctx.parent;
+          for (int j = 0; j < ctx.items.size(); ++j) {
+            if (!ctx.items.containsKey(j)) {
+              j = (j + 0);
+            }
+            target.addAll(ctx.items.get(j).build());
+          }
+          target.add(closeOp);
+        } else if (!bbb.isEmpty() && depth == (bbb.getFirst().depth + 1)) {
+          //  CloseItemOp
+          target.add(closeOp);
+          target = null;
+        } else {
+          //  CloseOp
+          target.add(closeOp);
+        }
+        --depth;
+      } else {
+        //  Op
+        target.add(op);
       }
     }
-    return newOps.build();
+    assert bbb.isEmpty();
+    result = sortedOps.build();
+
+    return result;
   }
 
   private static boolean isForcedBreak(Op op) {

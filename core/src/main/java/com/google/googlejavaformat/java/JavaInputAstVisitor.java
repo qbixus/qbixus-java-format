@@ -281,6 +281,8 @@ public class JavaInputAstVisitor extends TreePathScanner<Void, Void> {
   // TODO(cushon): generalize this
   private static final ImmutableMultimap<String, String> TYPE_ANNOTATIONS = typeAnnotations();
 
+  private boolean inASortedGroup;
+
   private static ImmutableSetMultimap<String, String> typeAnnotations() {
     ImmutableSetMultimap.Builder<String, String> result = ImmutableSetMultimap.builder();
     for (String annotation :
@@ -3757,25 +3759,39 @@ public class JavaInputAstVisitor extends TreePathScanner<Void, Void> {
       if (braces.isYes()) {
         builder.space();
         tokenBreakTrailingComment("{", plusTwo);
-        builder.blankLineWanted(BlankLineWanted.YES);
         builder.open(ZERO);
       }
+
       builder.open(plusTwo);
+      dropEmptyDeclarations();
+
+      markForPartialFormat();
+
+      builder.openOrdered(); //  group >>
+      var oldInASortedGroup = inASortedGroup;
+      inASortedGroup = true;
+
       boolean first = first0.isYes();
       boolean lastOneGotBlankLineBefore = false;
       PeekingIterator<Tree> it = Iterators.peekingIterator(bodyDeclarations.iterator());
+      var idx = bodyDeclarations.size();
       while (it.hasNext()) {
         Tree bodyDeclaration = it.next();
-        dropEmptyDeclarations();
-        builder.forcedBreak();
         boolean thisOneGetsBlankLineBefore =
             bodyDeclaration.getKind() != VARIABLE || hasJavaDoc(bodyDeclaration);
-        if (first) {
-          builder.blankLineWanted(PRESERVE);
-        } else if (!first && (thisOneGetsBlankLineBefore || lastOneGotBlankLineBefore)) {
-          builder.blankLineWanted(YES);
-        }
+
         markForPartialFormat();
+
+        --idx;
+        builder.openOrderedItem(idx); //  item >>
+
+        builder.forcedBreak();
+//        builder.blankLineWanted(YES);
+//        if (first) {
+//          builder.blankLineWanted(YES);
+//        } else if (thisOneGetsBlankLineBefore || lastOneGotBlankLineBefore) {
+//          builder.blankLineWanted(YES);
+//        }
 
         if (bodyDeclaration.getKind() == VARIABLE) {
           visitVariables(
@@ -3785,15 +3801,24 @@ public class JavaInputAstVisitor extends TreePathScanner<Void, Void> {
         } else {
           scan(bodyDeclaration, null);
         }
+        dropEmptyDeclarations();
+
+        builder.open(ZERO); //  bbb
+        builder.close();
+
+        builder.close(); //  >> item
+
         first = false;
         lastOneGotBlankLineBefore = thisOneGetsBlankLineBefore;
       }
-      dropEmptyDeclarations();
-      builder.forcedBreak();
+      builder.close(); // >> group
+      inASortedGroup = oldInASortedGroup;
+
       builder.close();
-      builder.forcedBreak();
+
       markForPartialFormat();
       if (braces.isYes()) {
+        builder.forcedBreak();
         builder.blankLineWanted(BlankLineWanted.NO);
         token("}", plusTwo);
         builder.close();
@@ -3944,7 +3969,7 @@ public class JavaInputAstVisitor extends TreePathScanner<Void, Void> {
   }
 
   protected void markForPartialFormat() {
-    if (!inExpression()) {
+    if (!inExpression() && !inASortedGroup) {
       builder.markForPartialFormat();
     }
   }

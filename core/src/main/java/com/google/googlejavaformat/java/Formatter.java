@@ -282,7 +282,7 @@ public final class Formatter {
     try {
       format(javaInput, javaOutput, options);
     } catch (FormattingError e) {
-      throw new FormatterException(e.diagnostics());
+      throw new FormatterException(e.diagnostics(), e);
     }
     RangeSet<Integer> tokenRangeSet = javaInput.characterRangesToTokenRanges(characterRanges);
     return javaOutput.getFormatReplacements(tokenRangeSet);
