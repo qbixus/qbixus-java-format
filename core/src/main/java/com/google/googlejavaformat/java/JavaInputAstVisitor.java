@@ -3771,7 +3771,7 @@ public class JavaInputAstVisitor extends TreePathScanner<Void, Void> {
       var blanks = new HashMap<Object, BlankLineWanted>();
       boolean first = first0.isYes();
       boolean lastOneGotBlankLineBefore = false;
-      for (var item : bodyItems) {
+      for (var item : arrangedItems) {
         Tree bodyDeclaration;
         if (item instanceof Tree) {
           bodyDeclaration = (Tree) item;
@@ -3785,6 +3785,8 @@ public class JavaInputAstVisitor extends TreePathScanner<Void, Void> {
           blanks.put(item, YES);
         } else if (thisOneGetsBlankLineBefore || lastOneGotBlankLineBefore) {
           blanks.put(item, YES);
+        } else if (first0.isYes() && item == bodyItems.getFirst()) {
+          blanks.put(item, BlankLineWanted.NO);
         }
         first = false;
         lastOneGotBlankLineBefore = thisOneGetsBlankLineBefore;

@@ -211,7 +211,7 @@ public final class JavaOutput extends Output {
     }
   }
 
-  public void rearrange() {
+  private void rearrange() {
     var kToJ = JavaOutput.makeKToIJ(this);
     var regionsByDepth = ArrayListMultimap.<Integer, Region>create();
     for (var region : regions) {
@@ -276,7 +276,6 @@ public final class JavaOutput extends Output {
         ranges.set(regionJ.getFirst() + j, newRanges.get(j));
       }
     }
-    setLines(ImmutableList.copyOf(mutableLines));
   }
 
   /** Flush any incomplete last line, then add the EOF token into our data structures. */
@@ -291,6 +290,9 @@ public final class JavaOutput extends Output {
       ranges.add(Formatter.EMPTY_RANGE);
     }
     ranges.add(eofRange);
+    setLines(ImmutableList.copyOf(mutableLines));
+
+    rearrange();
     setLines(ImmutableList.copyOf(mutableLines));
   }
 

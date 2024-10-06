@@ -169,7 +169,6 @@ public final class Formatter {
     doc.computeBreaks(javaOutput.getCommentsHelper(), MAX_LINE_LENGTH, new Doc.State(+0, 0));
     doc.write(javaOutput);
     javaOutput.flush();
-    javaOutput.rearrange();
   }
 
   private static JavaInputAstVisitor createVisitor(
