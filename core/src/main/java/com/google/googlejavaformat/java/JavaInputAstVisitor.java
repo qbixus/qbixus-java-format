@@ -3737,13 +3737,6 @@ public class JavaInputAstVisitor extends TreePathScanner<Void, Void> {
     builder.close();
   }
 
-  private static <T> T asInstanceOf(Object value, Class<T> clazz) {
-    if (!clazz.isInstance(value)) {
-      return null;
-    }
-    return (T) value;
-  }
-
   /** Add a list of declarations. */
   protected void addBodyDeclarations(
       List<? extends Tree> bodyDeclarations, BracesOrNot braces, FirstDeclarationsOrNot first0) {
@@ -3772,6 +3765,8 @@ public class JavaInputAstVisitor extends TreePathScanner<Void, Void> {
           bodyItems.add(bodyDeclaration);
         }
       }
+
+      var arrangedItems = bodyItems.reversed();
 
       var blanks = new HashMap<Object, BlankLineWanted>();
       boolean first = first0.isYes();
@@ -3807,7 +3802,6 @@ public class JavaInputAstVisitor extends TreePathScanner<Void, Void> {
       var regionStart = builder.getCurrentI();
       var regionItems = new HashMap<Integer, Range<Integer>>();
 
-      var idx = bodyItems.size();
       for (var item : bodyItems) {
         Tree bodyDeclaration;
         if (item instanceof Tree) {
@@ -3834,8 +3828,8 @@ public class JavaInputAstVisitor extends TreePathScanner<Void, Void> {
         }
         dropEmptyDeclarations();
 
-        --idx;
-        regionItems.put(idx, Range.closedOpen(regionItemStart, builder.getCurrentI()));
+        regionItems.put(
+            arrangedItems.indexOf(item), Range.closedOpen(regionItemStart, builder.getCurrentI()));
       }
 
       var region = new JavaOutput.Region();

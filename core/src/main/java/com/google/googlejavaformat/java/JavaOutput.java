@@ -34,12 +34,12 @@ import com.google.googlejavaformat.Newlines;
 import com.google.googlejavaformat.OpsBuilder.BlankLineWanted;
 import com.google.googlejavaformat.Output;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 
 /*
  * Throughout this file, {@code i} is an index for input lines, {@code j} is an index for output
@@ -211,16 +211,17 @@ public final class JavaOutput extends Output {
     }
   }
 
-  private void reorderRegions() {
+  public void rearrange() {
     var kToJ = JavaOutput.makeKToIJ(this);
-    var ggg = ArrayListMultimap.<Integer, Region>create();
-    var bbb = new TreeSet<Integer>();
+    var regionsByDepth = ArrayListMultimap.<Integer, Region>create();
     for (var region : regions) {
-      ggg.put(region.depth, region);
-      bbb.add(region.depth);
+      regionsByDepth.put(region.depth, region);
     }
-
-    for (var it = bbb.descendingSet().stream().flatMap(depth -> ggg.get(depth).stream()).iterator();
+    for (var it =
+            regionsByDepth.keys().stream()
+                .sorted(Comparator.reverseOrder())
+                .flatMap(depth -> regionsByDepth.get(depth).stream())
+                .iterator();
         it.hasNext(); ) {
       var region = it.next();
       ContiguousSet<Integer> regionJ;
@@ -275,6 +276,7 @@ public final class JavaOutput extends Output {
         ranges.set(regionJ.getFirst() + j, newRanges.get(j));
       }
     }
+    setLines(ImmutableList.copyOf(mutableLines));
   }
 
   /** Flush any incomplete last line, then add the EOF token into our data structures. */
@@ -289,9 +291,6 @@ public final class JavaOutput extends Output {
       ranges.add(Formatter.EMPTY_RANGE);
     }
     ranges.add(eofRange);
-    setLines(ImmutableList.copyOf(mutableLines));
-
-    reorderRegions();
     setLines(ImmutableList.copyOf(mutableLines));
   }
 
