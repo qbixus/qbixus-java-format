@@ -17,6 +17,7 @@ package com.google.googlejavaformat;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.Range;
 import com.google.googlejavaformat.OpsBuilder.BlankLineWanted;
+import java.util.Map;
 import java.util.Optional;
 
 /** An output from the formatter. */
@@ -65,6 +66,14 @@ public abstract class Output extends InputOutput {
 
   /** Marks a region that can be partially formatted. */
   public abstract void markForPartialFormat(Input.Token start, Input.Token end);
+
+  public static class Region {
+    public int depth;
+    public Range<Integer> bounds;
+    public Map<Integer, Range<Integer>> items;
+  }
+
+  public abstract void addRegion(Region value);
 
   /**
    * Get the {@link CommentsHelper}.

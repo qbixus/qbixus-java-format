@@ -20,6 +20,8 @@ import static java.util.Comparator.comparing;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ContiguousSet;
 import com.google.common.collect.DiscreteDomain;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Range;
@@ -32,9 +34,12 @@ import com.google.googlejavaformat.Newlines;
 import com.google.googlejavaformat.OpsBuilder.BlankLineWanted;
 import com.google.googlejavaformat.Output;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /*
  * Throughout this file, {@code i} is an index for input lines, {@code j} is an index for output
@@ -90,6 +95,12 @@ public final class JavaOutput extends Output {
     partialFormatRanges.add(Range.closed(lo, hi));
   }
 
+  private final Set<Region> regions = new HashSet<>();
+
+  public void addRegion(Region value) {
+    regions.add(value);
+  }
+
   // TODO(user): Add invariant.
   @Override
   public void append(String text, Range<Integer> range) {
@@ -140,7 +151,7 @@ public final class JavaOutput extends Output {
             if (i + 1 < text.length() && text.charAt(i + 1) == '\n') {
               i++;
             }
-            // falls through
+          // falls through
           case '\n':
             spacesPending = new StringBuilder();
             ++newlinesPending;
@@ -182,6 +193,99 @@ public final class JavaOutput extends Output {
     spacesPending.append(Strings.repeat(" ", indent));
   }
 
+  private void validateRegion(
+      ContiguousSet<Integer> regionJ, Map<Integer, ContiguousSet<Integer>> itemsJ) {
+    //  Каждая строка региона должна относиться к одному, и только к одному его элементу
+    for (var j : regionJ) {
+      boolean found = false;
+      for (var itemJ : itemsJ.values()) {
+        if (itemJ.contains(j)) {
+          if (found) {
+            throw new AssertionError("#DUPLICATE_LN");
+          }
+          found = true;
+        }
+      }
+      if (!found) {
+        throw new AssertionError("#LN_NOT_FOUND");
+      }
+    }
+  }
+
+  private void rearrange() {
+    var kToJ = JavaOutput.makeKToIJ(this);
+    var regionsByDepth = ArrayListMultimap.<Integer, Region>create();
+    for (var region : regions) {
+      regionsByDepth.put(region.depth, region);
+    }
+    for (var it =
+            regionsByDepth.keySet().stream()
+                .sorted(Comparator.reverseOrder())
+                .flatMap(depth -> regionsByDepth.get(depth).stream())
+                .iterator();
+        it.hasNext(); ) {
+      var region = it.next();
+
+      ContiguousSet<Integer> regionJ;
+      {
+        var regionK = ContiguousSet.create(region.bounds, DiscreteDomain.integers());
+        regionJ =
+            ContiguousSet.create(
+                kToJ.get(regionK.first()).span(kToJ.get(regionK.last())),
+                DiscreteDomain.integers());
+
+        //  Присоединяем все предшествующие пустые строки
+        var firstJ = regionJ.first() - 1;
+        while (firstJ >= 0 && mutableLines.get(firstJ).isEmpty()) {
+          --firstJ;
+        }
+        firstJ = Math.min(firstJ + 1, regionJ.first());
+
+        regionJ =
+            ContiguousSet.create(Range.closed(firstJ, regionJ.last()), DiscreteDomain.integers());
+      }
+
+      var itemsJ = new HashMap<Integer, ContiguousSet<Integer>>();
+      for (var item : region.items.entrySet()) {
+        var itemK = ContiguousSet.create(item.getValue(), DiscreteDomain.integers());
+        var itemJ =
+            ContiguousSet.create(
+                kToJ.get(itemK.first()).span(kToJ.get(itemK.last())), DiscreteDomain.integers());
+
+        //  Присоединяем все предшествующие пустые строки
+        var firstJ = itemJ.first() - 1;
+        while (firstJ >= 0 && mutableLines.get(firstJ).isEmpty()) {
+          --firstJ;
+        }
+        firstJ = Math.min(firstJ + 1, itemJ.first());
+
+        itemsJ.put(
+            item.getKey(),
+            ContiguousSet.create(Range.closed(firstJ, itemJ.last()), DiscreteDomain.integers()));
+      }
+
+      validateRegion(regionJ, itemsJ);
+
+      //  Собираем элементы региона (lines и ranges) в новом порядке
+      var newLines = new ArrayList<String>();
+      var newRanges = new ArrayList<Range<Integer>>();
+      for (var order = 0; order < itemsJ.size(); ++order) {
+        var itemJ = itemsJ.get(order);
+        for (var j : itemJ) {
+          newLines.add(mutableLines.get(j));
+          newRanges.add(ranges.get(j));
+        }
+      }
+      assert newLines.size() == regionJ.size() && newRanges.size() == regionJ.size();
+
+      //  Переписываем элементы региона его же элементами, но уже в новом порядке
+      for (var j = 0; j < regionJ.size(); ++j) {
+        mutableLines.set(regionJ.first() + j, newLines.get(j));
+        ranges.set(regionJ.first() + j, newRanges.get(j));
+      }
+    }
+  }
+
   /** Flush any incomplete last line, then add the EOF token into our data structures. */
   public void flush() {
     String lastLine = lineBuilder.toString();
@@ -194,6 +298,9 @@ public final class JavaOutput extends Output {
       ranges.add(Formatter.EMPTY_RANGE);
     }
     ranges.add(eofRange);
+    setLines(ImmutableList.copyOf(mutableLines));
+
+    rearrange();
     setLines(ImmutableList.copyOf(mutableLines));
   }
 

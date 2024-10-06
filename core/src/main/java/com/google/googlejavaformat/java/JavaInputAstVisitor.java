@@ -149,6 +149,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -3755,31 +3756,73 @@ public class JavaInputAstVisitor extends TreePathScanner<Void, Void> {
         builder.close();
       }
     } else {
+      var bodyItems = new ArrayList<Object>();
+      for (var it = Iterators.peekingIterator(bodyDeclarations.iterator()); it.hasNext(); ) {
+        var bodyDeclaration = it.next();
+        if (bodyDeclaration.getKind() == VARIABLE) {
+          bodyItems.add(variableFragments(it, bodyDeclaration));
+        } else {
+          bodyItems.add(bodyDeclaration);
+        }
+      }
+
+      var arrangedItems = bodyItems.reversed();
+
+      var blanks = new HashMap<Object, BlankLineWanted>();
+      boolean first = first0.isYes();
+      boolean lastOneGotBlankLineBefore = false;
+      for (var item : arrangedItems) {
+        Tree bodyDeclaration;
+        if (item instanceof Tree) {
+          bodyDeclaration = (Tree) item;
+        } else {
+          bodyDeclaration = (Tree) ((List<VariableTree>) item).get(0);
+        }
+
+        boolean thisOneGetsBlankLineBefore =
+            bodyDeclaration.getKind() != VARIABLE || hasJavaDoc(bodyDeclaration);
+        if (first) {
+          blanks.put(item, YES);
+        } else if (thisOneGetsBlankLineBefore || lastOneGotBlankLineBefore) {
+          blanks.put(item, YES);
+        } else if (first0.isYes() && item == bodyItems.get(0)) {
+          blanks.put(item, BlankLineWanted.NO);
+        }
+        first = false;
+        lastOneGotBlankLineBefore = thisOneGetsBlankLineBefore;
+      }
+
       if (braces.isYes()) {
         builder.space();
         tokenBreakTrailingComment("{", plusTwo);
         builder.open(ZERO);
       }
+
       builder.open(plusTwo);
       dropEmptyDeclarations();
-      boolean first = first0.isYes();
-      boolean lastOneGotBlankLineBefore = false;
-      PeekingIterator<Tree> it = Iterators.peekingIterator(bodyDeclarations.iterator());
-      while (it.hasNext()) {
-        Tree bodyDeclaration = it.next();
-        builder.forcedBreak();
-        boolean thisOneGetsBlankLineBefore =
-            bodyDeclaration.getKind() != VARIABLE || hasJavaDoc(bodyDeclaration);
-        if (first) {
-          builder.blankLineWanted(YES);
-        } else if (!first && (thisOneGetsBlankLineBefore || lastOneGotBlankLineBefore)) {
-          builder.blankLineWanted(YES);
-        }
-        markForPartialFormat();
 
+      var regionStart = builder.getCurrentI();
+      var regionItems = new HashMap<Integer, Range<Integer>>();
+
+      for (var item : bodyItems) {
+        Tree bodyDeclaration;
+        if (item instanceof Tree) {
+          bodyDeclaration = (Tree) item;
+        } else {
+          bodyDeclaration = (Tree) ((List<VariableTree>) item).get(0);
+        }
+
+        markForPartialFormat();
+        var regionItemStart = builder.getCurrentI();
+
+        builder.forcedBreak();
+        var blankWanted = blanks.get(item);
+        if (blankWanted != null) {
+          builder.blankLineWanted(blankWanted);
+        }
         if (bodyDeclaration.getKind() == VARIABLE) {
           visitVariables(
-              variableFragments(it, bodyDeclaration),
+              (List<VariableTree>) item,
               DeclarationKind.FIELD,
               fieldAnnotationDirection(((VariableTree) bodyDeclaration).getModifiers()));
         } else {
@@ -3787,14 +3830,23 @@ public class JavaInputAstVisitor extends TreePathScanner<Void, Void> {
         }
         dropEmptyDeclarations();
 
-        first = false;
-        lastOneGotBlankLineBefore = thisOneGetsBlankLineBefore;
+        regionItems.put(
+            arrangedItems.indexOf(item), Range.closedOpen(regionItemStart, builder.getCurrentI()));
       }
+
+      var region = new JavaOutput.Region();
+      region.depth = builder.depth();
+      region.bounds = Range.closedOpen(regionStart, builder.getCurrentI());
+      region.items = regionItems;
+      builder.addRegion(region);
+
       builder.forcedBreak();
       builder.close();
-      builder.forcedBreak();
+
       markForPartialFormat();
+
       if (braces.isYes()) {
+        builder.forcedBreak();
         builder.blankLineWanted(BlankLineWanted.NO);
         token("}", plusTwo);
         builder.close();
