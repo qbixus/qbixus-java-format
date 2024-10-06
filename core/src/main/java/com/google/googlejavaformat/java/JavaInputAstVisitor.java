@@ -3804,6 +3804,10 @@ public class JavaInputAstVisitor extends TreePathScanner<Void, Void> {
       builder.open(plusTwo);
       dropEmptyDeclarations();
 
+      var regionStart = builder.getCurrentI();
+      var regionItems = new HashMap<Integer, Range<Integer>>();
+
+      var idx = bodyItems.size();
       for (var item : bodyItems) {
         Tree bodyDeclaration;
         if (item instanceof Tree) {
@@ -3813,6 +3817,7 @@ public class JavaInputAstVisitor extends TreePathScanner<Void, Void> {
         }
 
         markForPartialFormat();
+        var regionItemStart = builder.getCurrentI();
 
         builder.forcedBreak();
         var blankWanted = blanks.get(item);
@@ -3828,7 +3833,17 @@ public class JavaInputAstVisitor extends TreePathScanner<Void, Void> {
           scan(bodyDeclaration, null);
         }
         dropEmptyDeclarations();
+
+        --idx;
+        regionItems.put(idx, Range.closedOpen(regionItemStart, builder.getCurrentI()));
       }
+
+      var region = new JavaOutput.Region();
+      region.depth = builder.depth();
+      region.bounds = Range.closedOpen(regionStart, builder.getCurrentI());
+      region.items = regionItems;
+      builder.addRegion(region);
+
       builder.forcedBreak();
       builder.close();
 

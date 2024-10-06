@@ -463,6 +463,14 @@ public final class OpsBuilder {
     lastPartialFormatBoundary = tokenI;
   }
 
+  public int getCurrentI() {
+    return getI(input.getTokens().get(tokenI));
+  }
+
+  public void addRegion(Output.Region value) {
+    output.addRegion(value);
+  }
+
   /**
    * Force or suppress a blank line here in the output.
    *

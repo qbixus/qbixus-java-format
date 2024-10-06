@@ -20,6 +20,8 @@ import static java.util.Comparator.comparing;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ContiguousSet;
 import com.google.common.collect.DiscreteDomain;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Range;
@@ -33,8 +35,11 @@ import com.google.googlejavaformat.OpsBuilder.BlankLineWanted;
 import com.google.googlejavaformat.Output;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 /*
  * Throughout this file, {@code i} is an index for input lines, {@code j} is an index for output
@@ -88,6 +93,12 @@ public final class JavaOutput extends Output {
     int lo = JavaOutput.startTok(start).getIndex();
     int hi = JavaOutput.endTok(end).getIndex();
     partialFormatRanges.add(Range.closed(lo, hi));
+  }
+
+  private final Set<Region> regions = new HashSet<>();
+
+  public void addRegion(Region value) {
+    regions.add(value);
   }
 
   // TODO(user): Add invariant.
@@ -182,6 +193,90 @@ public final class JavaOutput extends Output {
     spacesPending.append(Strings.repeat(" ", indent));
   }
 
+  private void validateRegion(
+      ContiguousSet<Integer> regionJ, Map<Integer, ContiguousSet<Integer>> itemsJ) {
+    for (var j = regionJ.getFirst(); j <= regionJ.getLast(); ++j) {
+      boolean found = false;
+      for (var itemJ : itemsJ.values()) {
+        if (itemJ.contains(j)) {
+          if (found) {
+            throw new AssertionError("#DUPLICATE_LN");
+          }
+          found = true;
+        }
+      }
+      if (!found) {
+        throw new AssertionError("#LN_NOT_FOUND");
+      }
+    }
+  }
+
+  private void reorderRegions() {
+    var kToJ = JavaOutput.makeKToIJ(this);
+    var ggg = ArrayListMultimap.<Integer, Region>create();
+    var bbb = new TreeSet<Integer>();
+    for (var region : regions) {
+      ggg.put(region.depth, region);
+      bbb.add(region.depth);
+    }
+
+    for (var it = bbb.descendingSet().stream().flatMap(depth -> ggg.get(depth).stream()).iterator();
+        it.hasNext(); ) {
+      var region = it.next();
+      ContiguousSet<Integer> regionJ;
+      {
+        var regionK = ContiguousSet.create(region.bounds, DiscreteDomain.integers());
+        regionJ =
+            ContiguousSet.create(
+                kToJ.get(regionK.getFirst()).span(kToJ.get(regionK.getLast())),
+                DiscreteDomain.integers());
+        var firstJ = regionJ.getFirst() - 1;
+        while (firstJ >= 0 && mutableLines.get(firstJ).isEmpty()) {
+          --firstJ;
+        }
+        firstJ = Math.min(firstJ + 1, regionJ.getFirst());
+        regionJ =
+            ContiguousSet.create(
+                Range.closed(firstJ, regionJ.getLast()), DiscreteDomain.integers());
+      }
+
+      var itemsJ = new HashMap<Integer, ContiguousSet<Integer>>();
+      for (var item : region.items.entrySet()) {
+        var itemK = ContiguousSet.create(item.getValue(), DiscreteDomain.integers());
+        var itemJ =
+            ContiguousSet.create(
+                kToJ.get(itemK.getFirst()).span(kToJ.get(itemK.getLast())),
+                DiscreteDomain.integers());
+        var firstJ = itemJ.getFirst() - 1;
+        while (firstJ >= 0 && mutableLines.get(firstJ).isEmpty()) {
+          --firstJ;
+        }
+        firstJ = Math.min(firstJ + 1, itemJ.getFirst());
+        itemsJ.put(
+            item.getKey(),
+            ContiguousSet.create(Range.closed(firstJ, itemJ.getLast()), DiscreteDomain.integers()));
+      }
+
+      validateRegion(regionJ, itemsJ);
+
+      var newLines = new ArrayList<String>();
+      var newRanges = new ArrayList<Range<Integer>>();
+      for (var order = 0; order < itemsJ.size(); ++order) {
+        var itemJ = itemsJ.get(order);
+        for (var j = itemJ.getFirst(); j <= itemJ.getLast(); ++j) {
+          newLines.add(mutableLines.get(j));
+          newRanges.add(ranges.get(j));
+        }
+      }
+      assert newLines.size() == regionJ.size() && newRanges.size() == regionJ.size();
+
+      for (var j = 0; j < regionJ.size(); ++j) {
+        mutableLines.set(regionJ.getFirst() + j, newLines.get(j));
+        ranges.set(regionJ.getFirst() + j, newRanges.get(j));
+      }
+    }
+  }
+
   /** Flush any incomplete last line, then add the EOF token into our data structures. */
   public void flush() {
     String lastLine = lineBuilder.toString();
@@ -194,6 +289,9 @@ public final class JavaOutput extends Output {
       ranges.add(Formatter.EMPTY_RANGE);
     }
     ranges.add(eofRange);
+    setLines(ImmutableList.copyOf(mutableLines));
+
+    reorderRegions();
     setLines(ImmutableList.copyOf(mutableLines));
   }
 
