@@ -149,6 +149,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -3736,6 +3737,13 @@ public class JavaInputAstVisitor extends TreePathScanner<Void, Void> {
     builder.close();
   }
 
+  private static <T> T asInstanceOf(Object value, Class<T> clazz) {
+    if (!clazz.isInstance(value)) {
+      return null;
+    }
+    return (T) value;
+  }
+
   /** Add a list of declarations. */
   protected void addBodyDeclarations(
       List<? extends Tree> bodyDeclarations, BracesOrNot braces, FirstDeclarationsOrNot first0) {
@@ -3755,46 +3763,79 @@ public class JavaInputAstVisitor extends TreePathScanner<Void, Void> {
         builder.close();
       }
     } else {
+      var bodyItems = new ArrayList<Object>();
+      for (var it = Iterators.peekingIterator(bodyDeclarations.iterator()); it.hasNext(); ) {
+        var bodyDeclaration = it.next();
+        if (bodyDeclaration.getKind() == VARIABLE) {
+          bodyItems.add(variableFragments(it, bodyDeclaration));
+        } else {
+          bodyItems.add(bodyDeclaration);
+        }
+      }
+
+      var blanks = new HashMap<Object, BlankLineWanted>();
+      boolean first = first0.isYes();
+      boolean lastOneGotBlankLineBefore = false;
+      for (var item : bodyItems) {
+        Tree bodyDeclaration;
+        if (item instanceof Tree) {
+          bodyDeclaration = (Tree) item;
+        } else {
+          bodyDeclaration = (Tree) ((List<VariableTree>) item).get(0);
+        }
+
+        boolean thisOneGetsBlankLineBefore =
+            bodyDeclaration.getKind() != VARIABLE || hasJavaDoc(bodyDeclaration);
+        if (first) {
+          blanks.put(item, YES);
+        } else if (thisOneGetsBlankLineBefore || lastOneGotBlankLineBefore) {
+          blanks.put(item, YES);
+        }
+        first = false;
+        lastOneGotBlankLineBefore = thisOneGetsBlankLineBefore;
+      }
+
       if (braces.isYes()) {
         builder.space();
         tokenBreakTrailingComment("{", plusTwo);
         builder.open(ZERO);
       }
+
       builder.open(plusTwo);
       dropEmptyDeclarations();
-      boolean first = first0.isYes();
-      boolean lastOneGotBlankLineBefore = false;
-      PeekingIterator<Tree> it = Iterators.peekingIterator(bodyDeclarations.iterator());
-      while (it.hasNext()) {
-        Tree bodyDeclaration = it.next();
-        builder.forcedBreak();
-        boolean thisOneGetsBlankLineBefore =
-            bodyDeclaration.getKind() != VARIABLE || hasJavaDoc(bodyDeclaration);
-        if (first) {
-          builder.blankLineWanted(YES);
-        } else if (!first && (thisOneGetsBlankLineBefore || lastOneGotBlankLineBefore)) {
-          builder.blankLineWanted(YES);
+
+      for (var item : bodyItems) {
+        Tree bodyDeclaration;
+        if (item instanceof Tree) {
+          bodyDeclaration = (Tree) item;
+        } else {
+          bodyDeclaration = (Tree) ((List<VariableTree>) item).get(0);
         }
+
         markForPartialFormat();
 
+        builder.forcedBreak();
+        var blankWanted = blanks.get(item);
+        if (blankWanted != null) {
+          builder.blankLineWanted(blankWanted);
+        }
         if (bodyDeclaration.getKind() == VARIABLE) {
           visitVariables(
-              variableFragments(it, bodyDeclaration),
+              (List<VariableTree>) item,
               DeclarationKind.FIELD,
               fieldAnnotationDirection(((VariableTree) bodyDeclaration).getModifiers()));
         } else {
           scan(bodyDeclaration, null);
         }
         dropEmptyDeclarations();
-
-        first = false;
-        lastOneGotBlankLineBefore = thisOneGetsBlankLineBefore;
       }
       builder.forcedBreak();
       builder.close();
-      builder.forcedBreak();
+
       markForPartialFormat();
+
       if (braces.isYes()) {
+        builder.forcedBreak();
         builder.blankLineWanted(BlankLineWanted.NO);
         token("}", plusTwo);
         builder.close();
