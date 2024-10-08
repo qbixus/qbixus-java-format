@@ -11,25 +11,44 @@ import java.util.List;
 @MarkerAnnotation
 class M {
 
-  class Exception0 extends Exception {}
+  M xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx = null;
+  M xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx =
+      null;
 
-  class Exception1 extends Exception {}
-
-  class Exception2 extends Exception {}
-
-  class Exception3 extends Exception {}
-
-  class Exception4 extends Exception {}
-
-  class Exception5 extends Exception {}
-
-  class Exception6 extends Exception {}
-
-  class Exception7 extends Exception {}
-
-  class Exception8 extends Exception {}
-
-  class Exception9 extends Exception {}
+  <
+          XXXXXXXXXX,
+          XXXXXXXXXX,
+          XXXXXXXXXX,
+          XXXXXXXXXX,
+          XXXXXXXXXX,
+          XXXXXXXXXX,
+          XXXXXXXXXX,
+          XXXXXXXXXX,
+          XXXXXXXXXX,
+          XXXXXXXXXX,
+          XXXXXXXXXX,
+          XXXXXXXXXX>
+      M(
+          ZZZZZZZZZZ z,
+          ZZZZZZZZZZ z,
+          ZZZZZZZZZZ z,
+          ZZZZZZZZZZ z,
+          ZZZZZZZZZZ z,
+          ZZZZZZZZZZ z,
+          ZZZZZZZZZZ z,
+          ZZZZZZZZZZ z,
+          ZZZZZZZZZZ z,
+          ZZZZZZZZZZ z)
+          throws EEEEEEEEEE,
+              EEEEEEEEEE,
+              EEEEEEEEEE,
+              EEEEEEEEEE,
+              EEEEEEEEEE,
+              EEEEEEEEEE,
+              EEEEEEEEEE,
+              EEEEEEEEEE,
+              EEEEEEEEEE,
+              EEEEEEEEEE {}
 
   void methodName1(int x) {}
 
@@ -899,8 +918,6 @@ class M {
     return null;
   }
 
-  static <T0, T1, T2> void m() {}
-
   M identity() {
     return this;
   }
@@ -955,63 +972,6 @@ class M {
             + x[14] + x[15]);
   }
 
-  static void method999(Object... args) {
-    method999(1, 2, 3, 4, 5);
-    method999(1, 2, 3, 4, 5);
-    method999(
-        1, 2,
-        3, 4,
-        5, 6);
-    method999(1, 2, 3, 4, 5, 6);
-    method999("one", 1, "two", 2, "three", 3);
-    method999("one", 1);
-    method999(
-        "one", 1,
-        "two", 2);
-    method999(
-        "one", 1,
-        "two", 1 + 1,
-        "three", 1 + 1 + 1);
-    method999(
-        "xxxxxxxxxxxxxx",
-        "xxxxxxxxxxxxxx",
-        "xxxxxxxxxxxxxx",
-        "xxxxxxxxxxxxxx",
-        "xxxxxxxxxxxxxx",
-        "xxxxxxxxxxxxxx",
-        "xxxxxxxxxxxxxx",
-        "xxxxxxxxxxxxxx",
-        "xxxxxxxxxxxxxx",
-        "xxxxxxxxxxxxxx",
-        "xxxxxxxxxxxxxx");
-  }
-
-  static class Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx {
-
-    static Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx fff(
-        int x) {
-      return null;
-    }
-  }
-
-  static
-  class Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx {
-
-    static Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx fff(
-        int x) {
-      return null;
-    }
-
-    static Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-        ffffffffff(int x) {
-      return null;
-    }
-  }
-
-  M xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx = null;
-  M xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx =
-      null;
-
   M fff(int x) {
     Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.fff(0);
     Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.fff(
@@ -1054,38 +1014,78 @@ class M {
     return this;
   }
 
-  <
-          XXXXXXXXXX,
-          XXXXXXXXXX,
-          XXXXXXXXXX,
-          XXXXXXXXXX,
-          XXXXXXXXXX,
-          XXXXXXXXXX,
-          XXXXXXXXXX,
-          XXXXXXXXXX,
-          XXXXXXXXXX,
-          XXXXXXXXXX,
-          XXXXXXXXXX,
-          XXXXXXXXXX>
-      M(
-          ZZZZZZZZZZ z,
-          ZZZZZZZZZZ z,
-          ZZZZZZZZZZ z,
-          ZZZZZZZZZZ z,
-          ZZZZZZZZZZ z,
-          ZZZZZZZZZZ z,
-          ZZZZZZZZZZ z,
-          ZZZZZZZZZZ z,
-          ZZZZZZZZZZ z,
-          ZZZZZZZZZZ z)
-          throws EEEEEEEEEE,
-              EEEEEEEEEE,
-              EEEEEEEEEE,
-              EEEEEEEEEE,
-              EEEEEEEEEE,
-              EEEEEEEEEE,
-              EEEEEEEEEE,
-              EEEEEEEEEE,
-              EEEEEEEEEE,
-              EEEEEEEEEE {}
+  static <T0, T1, T2> void m() {}
+
+  static void method999(Object... args) {
+    method999(1, 2, 3, 4, 5);
+    method999(1, 2, 3, 4, 5);
+    method999(
+        1, 2,
+        3, 4,
+        5, 6);
+    method999(1, 2, 3, 4, 5, 6);
+    method999("one", 1, "two", 2, "three", 3);
+    method999("one", 1);
+    method999(
+        "one", 1,
+        "two", 2);
+    method999(
+        "one", 1,
+        "two", 1 + 1,
+        "three", 1 + 1 + 1);
+    method999(
+        "xxxxxxxxxxxxxx",
+        "xxxxxxxxxxxxxx",
+        "xxxxxxxxxxxxxx",
+        "xxxxxxxxxxxxxx",
+        "xxxxxxxxxxxxxx",
+        "xxxxxxxxxxxxxx",
+        "xxxxxxxxxxxxxx",
+        "xxxxxxxxxxxxxx",
+        "xxxxxxxxxxxxxx",
+        "xxxxxxxxxxxxxx",
+        "xxxxxxxxxxxxxx");
+  }
+
+  class Exception0 extends Exception {}
+
+  class Exception1 extends Exception {}
+
+  class Exception2 extends Exception {}
+
+  class Exception3 extends Exception {}
+
+  class Exception4 extends Exception {}
+
+  class Exception5 extends Exception {}
+
+  class Exception6 extends Exception {}
+
+  class Exception7 extends Exception {}
+
+  class Exception8 extends Exception {}
+
+  class Exception9 extends Exception {}
+
+  static class Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx {
+
+    static Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx fff(
+        int x) {
+      return null;
+    }
+  }
+
+  static
+  class Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx {
+
+    static Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx fff(
+        int x) {
+      return null;
+    }
+
+    static Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        ffffffffff(int x) {
+      return null;
+    }
+  }
 }

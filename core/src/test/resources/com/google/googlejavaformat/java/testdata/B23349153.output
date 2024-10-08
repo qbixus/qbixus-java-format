@@ -1,14 +1,14 @@
 class B23349153 {
 
+  {
+    System.err.println("Hello");
+    ;
+  }
+
   enum Foo {
 
     A,
     B,
-    ;
-  }
-
-  {
-    System.err.println("Hello");
     ;
   }
 }

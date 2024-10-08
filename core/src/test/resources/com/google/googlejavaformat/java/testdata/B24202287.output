@@ -16,13 +16,6 @@ class B24202287 {
     int y = ((int[]) null)[0];
   }
 
-  IntentSource getSource() {
-    return mIntent.isPresent() && mIntent.get().hasExtra(INTENT_SOURCE_KEY)
-        ? IntentSource.values()[
-            mIntent.get().getIntExtra(INTENT_SOURCE_KEY, IntentSource.OTHER.ordinal())]
-        : IntentSource.OTHER;
-  }
-
   {
     mTabUiParts[mRenderedTabIndex].setData(
         tabs[mRenderedTabIndex],
@@ -32,5 +25,12 @@ class B24202287 {
         mOnDailySummaryHeaderClickListener,
         mShowSpacerForSnackbar,
         mResetScrollAndAnimationAndReplaceDoodle);
+  }
+
+  IntentSource getSource() {
+    return mIntent.isPresent() && mIntent.get().hasExtra(INTENT_SOURCE_KEY)
+        ? IntentSource.values()[
+            mIntent.get().getIntExtra(INTENT_SOURCE_KEY, IntentSource.OTHER.ordinal())]
+        : IntentSource.OTHER;
   }
 }
