@@ -1,5 +1,7 @@
 public class ArrayVsVarargs {
 
+  Class<?> c = byte[].class;
+
   void f(String[] arg) {}
 
   void g(String... arg) {}
@@ -11,6 +13,4 @@ public class ArrayVsVarargs {
   void j(String @C [] @D [] arg) {}
 
   void k(String @E [] @F ... arg) {}
-
-  Class<?> c = byte[].class;
 }

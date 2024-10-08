@@ -1,9 +1,5 @@
 interface Test {
 
-  static class Test1 implements Test {}
-
-  static class Test2 implements Test {}
-
   public static void main(String[] args) {
     Test test = new Test1();
     switch (test) {
@@ -12,4 +8,8 @@ interface Test {
       default -> throw new IllegalStateException("Unexpected value: " + test);
     }
   }
+
+  static class Test1 implements Test {}
+
+  static class Test2 implements Test {}
 }
