@@ -3766,7 +3766,9 @@ public class JavaInputAstVisitor extends TreePathScanner<Void, Void> {
         }
       }
 
-      var arrangedItems = bodyItems.reversed();
+      var ranks = JavaClassArrangement.applyQbixusRanking(bodyItems);
+      var arrangedItems = new ArrayList<>(bodyItems);
+      arrangedItems.sort(Comparator.comparingInt(ranks::get));
 
       var blanks = new HashMap<Object, BlankLineWanted>();
       boolean first = first0.isYes();
