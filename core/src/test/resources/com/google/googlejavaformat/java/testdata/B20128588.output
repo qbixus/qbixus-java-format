@@ -8,21 +8,6 @@ package edu.oswego.cs.dl.util.concurrent;
 @Baz
 class Test {
 
-  @Foo
-  @Bar
-  @Baz
-  Object f() {}
-
-  @Foo
-  @Bar
-  @Baz
-  public Object f() {}
-
-  @Foo
-  @Bar
-  @Baz
-  void f() {}
-
   @Foo @Bar @Baz static Object field;
 
   static @Foo @Bar @Baz Object field;
@@ -33,34 +18,6 @@ class Test {
   @Bar
   @Baz
   Object field;
-
-  {
-    @Foo
-    @Bar
-    @Baz
-    final Object var;
-
-    final @Foo @Bar @Baz Object var;
-
-    @Foo
-    @Bar
-    @Baz
-    Object var;
-
-    @Foo(xs = 42)
-    @Bar
-    @Baz
-    Object var;
-  }
-
-  void f(
-      @Foo @Bar @Baz final Object var,
-      final @Foo @Bar @Baz Object var,
-      @Foo @Bar @Baz Object var,
-      @Foo(xs = 42) @Bar @Baz Object var) {}
-
-  <@TA T extends @TA Object> @TA T f(List<? extends @TA T> a, List<? super @TA T> b)
-      throws @TA Exception {}
 
   @FooXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
   @BarXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -115,6 +72,49 @@ class Test {
         XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
       })
   Object var;
+
+  {
+    @Foo
+    @Bar
+    @Baz
+    final Object var;
+
+    final @Foo @Bar @Baz Object var;
+
+    @Foo
+    @Bar
+    @Baz
+    Object var;
+
+    @Foo(xs = 42)
+    @Bar
+    @Baz
+    Object var;
+  }
+
+  @Foo
+  @Bar
+  @Baz
+  Object f() {}
+
+  @Foo
+  @Bar
+  @Baz
+  void f() {}
+
+  void f(
+      @Foo @Bar @Baz final Object var,
+      final @Foo @Bar @Baz Object var,
+      @Foo @Bar @Baz Object var,
+      @Foo(xs = 42) @Bar @Baz Object var) {}
+
+  <@TA T extends @TA Object> @TA T f(List<? extends @TA T> a, List<? super @TA T> b)
+      throws @TA Exception {}
+
+  @Foo
+  @Bar
+  @Baz
+  public Object f() {}
 }
 
 @Frozzle({

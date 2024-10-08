@@ -7,24 +7,6 @@ package com.google.googlejavaformat.java.test;
  */
 class A {
 
-  public @interface X {
-
-    int x();
-
-    int y() default
-        1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1
-            + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1;
-  }
-
-  @X(x = 1)
-  private @interface Y {}
-
-  // TODO(user): Add annotation declaration with empty body.
-
-  @X(x = 1)
-  @Y
-  protected @interface Z {}
-
   // TODO(user): Include type annotations once we can include a higher language level.
 
   int[] array1 = new int[5];
@@ -84,4 +66,22 @@ class A {
             + 2 + 2 + 2 + 2 + 2 + 2 + 2 + 2 + 2 + 2 + 2 + 2 + 2 + 2 + 2 + 2 + 2 + 2 + 2 + 2 + 2 + 2
             + 2 + 2 + 2 + 2 + 2 + 2 + 2 + 2 + 2 + 2 + 2 + 2 + 2 + 2 + 2 + 2 + 2 + 2 + 2;
   }
+
+  public @interface X {
+
+    int x();
+
+    int y() default
+        1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1
+            + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1;
+  }
+
+  @X(x = 1)
+  private @interface Y {}
+
+  // TODO(user): Add annotation declaration with empty body.
+
+  @X(x = 1)
+  @Y
+  protected @interface Z {}
 }

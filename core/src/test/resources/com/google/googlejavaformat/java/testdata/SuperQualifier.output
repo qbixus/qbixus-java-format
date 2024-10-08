@@ -1,5 +1,10 @@
 class SuperQualifier {
 
+  {
+    this.aaaaaaaaaaaaaaaa.bbbbbbbbbbbbbbbbbbb(
+        ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc);
+  }
+
   String a() {
     return this.toStringHelper()
         .add("foo", foo_________________________________________)
@@ -10,10 +15,5 @@ class SuperQualifier {
     return super.toStringHelper()
         .add("foo", foo_________________________________________)
         .add("bar", bar_________________________________________);
-  }
-
-  {
-    this.aaaaaaaaaaaaaaaa.bbbbbbbbbbbbbbbbbbb(
-        ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc);
   }
 }

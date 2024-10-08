@@ -1,18 +1,5 @@
 class B21283374 {
 
-  void f(
-      boolean flagA,
-      boolean flagB,
-      boolean flagC,
-      boolean flagD,
-      boolean flagE,
-      boolean flagF,
-      boolean flagG,
-      boolean flagH,
-      boolean flagI,
-      boolean flagJ,
-      boolean flagK) {}
-
   {
     f(
         /* flagA= */ Boolean.TRUE,
@@ -66,4 +53,17 @@ class B21283374 {
         arg2, /* paramName2 */
         arg3xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx);
   }
+
+  void f(
+      boolean flagA,
+      boolean flagB,
+      boolean flagC,
+      boolean flagD,
+      boolean flagE,
+      boolean flagF,
+      boolean flagG,
+      boolean flagH,
+      boolean flagI,
+      boolean flagJ,
+      boolean flagK) {}
 }

@@ -1,13 +1,5 @@
 class ExpressionSwitch {
 
-  boolean odd(int x) {
-    return switch (x) {
-      case 0 -> true;
-      case 1 -> false;
-      default -> odd(x - 1);
-    };
-  }
-
   {
     int f =
         switch (i) {
@@ -31,6 +23,14 @@ class ExpressionSwitch {
       }
       default -> System.out.println("default");
     }
+  }
+
+  boolean odd(int x) {
+    return switch (x) {
+      case 0 -> true;
+      case 1 -> false;
+      default -> odd(x - 1);
+    };
   }
 
   String breakLongCaseArgs(MyEnum e) {

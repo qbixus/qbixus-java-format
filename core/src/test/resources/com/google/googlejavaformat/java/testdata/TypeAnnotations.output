@@ -2,21 +2,20 @@ import org.jspecify.annotations.Nullable;
 
 class TypeAnnotations {
 
-  @Deprecated
-  public @Nullable Object foo() {}
-
-  public @Deprecated Object foo() {}
-
-  @Nullable Foo handle() {
-    @Nullable Bar bar = bar();
-    try (@Nullable Baz baz = baz()) {}
-  }
-
   Foo(
       @Nullable Bar //
           param1, //
       Baz //
           param2) {}
+
+  @Deprecated
+  @Nullable
+  TypeAnnotations() {}
+
+  @Nullable Foo handle() {
+    @Nullable Bar bar = bar();
+    try (@Nullable Baz baz = baz()) {}
+  }
 
   void g(
       @Deprecated
@@ -26,15 +25,16 @@ class TypeAnnotations {
           @Nullable ImmutableList<String>
               veryVeryLoooooooooooooooooooooooooooooooooooooooooooooooooooooooong) {}
 
+  @Nullable @Nullable Object doubleTrouble() {}
+
   @Deprecated
-  @Nullable
-  TypeAnnotations() {}
+  public @Nullable Object foo() {}
+
+  public @Deprecated Object foo() {}
 
   enum Foo {
 
     @Nullable
     BAR;
   }
-
-  @Nullable @Nullable Object doubleTrouble() {}
 }

@@ -3,9 +3,11 @@ package com.google.googlejavaformat.java.test;
 /** Tests for Blocks, BodyDeclarations, BooleanLiterals, and BreakStatements. */
 class B {
 
-  int x;
-  private int y;
   public int z;
+
+  int x;
+
+  private int y;
 
   void f() {
     LABEL:
