@@ -218,7 +218,7 @@ public final class JavaOutput extends Output {
       regionsByDepth.put(region.depth, region);
     }
     for (var it =
-            regionsByDepth.keys().stream()
+            regionsByDepth.keySet().stream()
                 .sorted(Comparator.reverseOrder())
                 .flatMap(depth -> regionsByDepth.get(depth).stream())
                 .iterator();
