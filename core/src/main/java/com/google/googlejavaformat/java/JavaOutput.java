@@ -195,7 +195,7 @@ public final class JavaOutput extends Output {
 
   private void validateRegion(
       ContiguousSet<Integer> regionJ, Map<Integer, ContiguousSet<Integer>> itemsJ) {
-    for (var j = regionJ.getFirst(); j <= regionJ.getLast(); ++j) {
+    for (var j = regionJ.first(); j <= regionJ.last(); ++j) {
       boolean found = false;
       for (var itemJ : itemsJ.values()) {
         if (itemJ.contains(j)) {
@@ -229,16 +229,16 @@ public final class JavaOutput extends Output {
         var regionK = ContiguousSet.create(region.bounds, DiscreteDomain.integers());
         regionJ =
             ContiguousSet.create(
-                kToJ.get(regionK.getFirst()).span(kToJ.get(regionK.getLast())),
+                kToJ.get(regionK.first()).span(kToJ.get(regionK.last())),
                 DiscreteDomain.integers());
-        var firstJ = regionJ.getFirst() - 1;
+        var firstJ = regionJ.first() - 1;
         while (firstJ >= 0 && mutableLines.get(firstJ).isEmpty()) {
           --firstJ;
         }
-        firstJ = Math.min(firstJ + 1, regionJ.getFirst());
+        firstJ = Math.min(firstJ + 1, regionJ.first());
         regionJ =
             ContiguousSet.create(
-                Range.closed(firstJ, regionJ.getLast()), DiscreteDomain.integers());
+                Range.closed(firstJ, regionJ.last()), DiscreteDomain.integers());
       }
 
       var itemsJ = new HashMap<Integer, ContiguousSet<Integer>>();
@@ -246,16 +246,16 @@ public final class JavaOutput extends Output {
         var itemK = ContiguousSet.create(item.getValue(), DiscreteDomain.integers());
         var itemJ =
             ContiguousSet.create(
-                kToJ.get(itemK.getFirst()).span(kToJ.get(itemK.getLast())),
+                kToJ.get(itemK.first()).span(kToJ.get(itemK.last())),
                 DiscreteDomain.integers());
-        var firstJ = itemJ.getFirst() - 1;
+        var firstJ = itemJ.first() - 1;
         while (firstJ >= 0 && mutableLines.get(firstJ).isEmpty()) {
           --firstJ;
         }
-        firstJ = Math.min(firstJ + 1, itemJ.getFirst());
+        firstJ = Math.min(firstJ + 1, itemJ.first());
         itemsJ.put(
             item.getKey(),
-            ContiguousSet.create(Range.closed(firstJ, itemJ.getLast()), DiscreteDomain.integers()));
+            ContiguousSet.create(Range.closed(firstJ, itemJ.last()), DiscreteDomain.integers()));
       }
 
       validateRegion(regionJ, itemsJ);
@@ -264,7 +264,7 @@ public final class JavaOutput extends Output {
       var newRanges = new ArrayList<Range<Integer>>();
       for (var order = 0; order < itemsJ.size(); ++order) {
         var itemJ = itemsJ.get(order);
-        for (var j = itemJ.getFirst(); j <= itemJ.getLast(); ++j) {
+        for (var j = itemJ.first(); j <= itemJ.last(); ++j) {
           newLines.add(mutableLines.get(j));
           newRanges.add(ranges.get(j));
         }
@@ -272,8 +272,8 @@ public final class JavaOutput extends Output {
       assert newLines.size() == regionJ.size() && newRanges.size() == regionJ.size();
 
       for (var j = 0; j < regionJ.size(); ++j) {
-        mutableLines.set(regionJ.getFirst() + j, newLines.get(j));
-        ranges.set(regionJ.getFirst() + j, newRanges.get(j));
+        mutableLines.set(regionJ.first() + j, newLines.get(j));
+        ranges.set(regionJ.first() + j, newRanges.get(j));
       }
     }
   }
