@@ -3790,7 +3790,7 @@ public class JavaInputAstVisitor extends TreePathScanner<Void, Void> {
           blanks.put(item, YES);
         } else if (lastItem != null && !ranks.get(lastItem).equals(ranks.get(item))) {
           blanks.put(item, YES);
-        } else if (first0.isYes() && item == bodyItems.getFirst()) {
+        } else if (first0.isYes() && item == bodyItems.get(0)) {
           blanks.put(item, BlankLineWanted.NO);
         }
         first = false;
