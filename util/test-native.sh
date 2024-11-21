@@ -15,16 +15,16 @@
 
 set -euox pipefail
 
-time java -jar core/target/google-java-format-*-all-deps.jar || true
+time java -jar core/target/qbixus-java-format-*-all-deps.jar || true
 
 status=-1
-chmod +x core/target/google-java-format
-if time core/target/google-java-format; then
+chmod +x core/target/qbixus-java-format
+if time core/target/qbixus-java-format; then
  status=0
 else
  status=$?
 fi
 if [[ $status -ne 2 ]]; then
-  echo "google-java-format_linux (native) without arguments should have printed usage help and exited with 2, but did not :("
+  echo "qbixus-java-format_linux (native) without arguments should have printed usage help and exited with 2, but did not :("
   exit 1
 fi
