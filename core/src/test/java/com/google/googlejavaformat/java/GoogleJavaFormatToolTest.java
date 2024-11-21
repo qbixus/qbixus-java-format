@@ -32,7 +32,7 @@ public class GoogleJavaFormatToolTest {
 
   @Test
   public void testUsageOutputAfterLoadingViaToolName() {
-    String name = "google-java-format";
+    String name = "qbixus-java-format";
 
     assertThat(
             ServiceLoader.load(Tool.class).stream()
@@ -58,7 +58,7 @@ public class GoogleJavaFormatToolTest {
     String usage = new String(err.toByteArray(), UTF_8);
 
     // Check that doc links are included.
-    assertThat(usage).containsMatch("http.*/google-java-format");
-    assertThat(usage).contains("Usage: google-java-format");
+    assertThat(usage).containsMatch("http.*/qbixus-java-format");
+    assertThat(usage).contains("Usage: qbixus-java-format");
   }
 }

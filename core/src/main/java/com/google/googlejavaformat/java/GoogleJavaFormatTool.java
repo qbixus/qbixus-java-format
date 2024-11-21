@@ -30,7 +30,7 @@ import javax.tools.Tool;
 public class GoogleJavaFormatTool implements Tool {
   @Override
   public String name() {
-    return "google-java-format";
+    return "qbixus-java-format";
   }
 
   @Override

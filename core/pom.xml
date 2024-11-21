@@ -20,17 +20,17 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>com.google.googlejavaformat</groupId>
-    <artifactId>google-java-format-parent</artifactId>
-  <version>HEAD-SNAPSHOT</version>
+    <groupId>io.github.qbixus.googlejavaformat</groupId>
+    <artifactId>qbixus-java-format-parent</artifactId>
+    <version>HEAD-SNAPSHOT</version>
   </parent>
 
-  <artifactId>google-java-format</artifactId>
+  <artifactId>qbixus-java-format</artifactId>
 
-  <name>Google Java Format</name>
+  <name>Google Java Format (qbixus variation)</name>
 
   <description>
-    A Java source code formatter that follows Google Java Style.
+    A Java source code formatter that follows Google Java Style (qbixus variation).
   </description>
 
   <dependencies>
@@ -301,7 +301,7 @@
               </execution>
             </executions>
             <configuration>
-              <imageName>google-java-format</imageName>
+              <imageName>qbixus-java-format</imageName>
               <classpath>
                 <param>${project.build.directory}/${project.artifactId}-${project.version}-all-deps.jar</param>
               </classpath>

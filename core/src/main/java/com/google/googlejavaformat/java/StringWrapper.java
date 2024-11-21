@@ -103,7 +103,7 @@ public final class StringWrapper {
                 "Something has gone terribly wrong. We planned to make the below formatting change,"
                     + " but have aborted because it would unexpectedly change the AST.\n"
                     + "Please file a bug: "
-                    + "https://github.com/google/google-java-format/issues/new"
+                    + "https://github.com/qbixus/qbixus-java-format/issues/new"
                     + "\n\n=== Actual: ===\n%s\n=== Expected: ===\n%s\n",
                 actual, expected));
       }

@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: Release google-java-format
+name: Release qbixus-java-format
 
 on:
   workflow_dispatch:
@@ -48,10 +48,10 @@ jobs:
           git ls-files | grep -E '(pom.xml|MANIFEST.MF)$' | xargs git add
           git config --global user.email "${{ github.actor }}@users.noreply.github.com"
           git config --global user.name "${{ github.actor }}"
-          git commit -m "Release google-java-format ${{ github.event.inputs.version }}"
+          git commit -m "Release qbixus-java-format ${{ github.event.inputs.version }}"
           git tag "v${{ github.event.inputs.version }}"
           echo "TARGET_COMMITISH=$(git rev-parse HEAD)" >> $GITHUB_ENV
-          git remote set-url origin https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/google/google-java-format.git
+          git remote set-url origin https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/qbixus/qbixus-java-format.git
 
       - name: Deploy to Sonatype staging
         env:
@@ -72,7 +72,7 @@ jobs:
           tag_name: "v${{ github.event.inputs.version }}"
           target_commitish: ${{ env.TARGET_COMMITISH }}
           files: |
-            core/target/google-java-format-*.jar
+            core/target/qbixus-java-format-*.jar
 
   build-native-image:
     name: "Build GraalVM native-image on ${{ matrix.os }}"
@@ -104,9 +104,9 @@ jobs:
       - name: "Native"
         run: mvn -Pnative -DskipTests package -pl core -am
       - name: "Move outputs"
-        run: cp core/target/google-java-format${{ env.EXTENSION }} google-java-format_${{ env.SUFFIX }}${{ env.EXTENSION }}
+        run: cp core/target/qbixus-java-format${{ env.EXTENSION }} qbixus-java-format_${{ env.SUFFIX }}${{ env.EXTENSION }}
       - name: "Upload native-image"
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
-        run: gh release upload "v${{ github.event.inputs.version }}" "google-java-format_${{ env.SUFFIX }}${{ env.EXTENSION }}"
+        run: gh release upload "v${{ github.event.inputs.version }}" "qbixus-java-format_${{ env.SUFFIX }}${{ env.EXTENSION }}"

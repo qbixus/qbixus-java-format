@@ -75,8 +75,8 @@ public class MainTest {
       String usage = e.getMessage();
 
       // Check that doc links are included.
-      assertThat(usage).contains("https://github.com/google/google-java-format");
-      assertThat(usage).contains("Usage: google-java-format");
+      assertThat(usage).contains("https://github.com/qbixus/qbixus-java-format");
+      assertThat(usage).contains("Usage: qbixus-java-format");
 
       // Sanity check that a flag and description is in included.
       assertThat(usage).contains("--length");
@@ -93,7 +93,7 @@ public class MainTest {
     StringWriter err = new StringWriter();
     Main main = new Main(new PrintWriter(out, true), new PrintWriter(err, true), System.in);
     assertThat(main.format("-version")).isEqualTo(0);
-    assertThat(err.toString()).contains("google-java-format: Version ");
+    assertThat(err.toString()).contains("qbixus-java-format: Version ");
   }
 
   @Test
@@ -130,7 +130,7 @@ public class MainTest {
             .start();
     process.waitFor();
     String err = new String(ByteStreams.toByteArray(process.getErrorStream()), UTF_8);
-    assertThat(err).contains("Usage: google-java-format");
+    assertThat(err).contains("Usage: qbixus-java-format");
     assertThat(process.exitValue()).isEqualTo(2);
   }
 

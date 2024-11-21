@@ -1,7 +1,10 @@
-# google-java-format
+# qbixus-java-format
 
-`google-java-format` is a program that reformats Java source code to comply with
+`qbixus-java-format` is a program that reformats Java source code to comply with
 [Google Java Style][].
+
+TBD (about relation with google-java-format project).
+
 
 [Google Java Style]: https://google.github.io/styleguide/javaguide.html
 
@@ -9,11 +12,11 @@
 
 ### From the command-line
 
-[Download the formatter](https://github.com/google/google-java-format/releases)
+[Download the formatter](https://github.com/qbixus/qbixus-java-format/releases)
 and run it with:
 
 ```
-java -jar /path/to/google-java-format-${GJF_VERSION?}-all-deps.jar <options> [files...]
+java -jar /path/to/qbixus-java-format-${GJF_VERSION?}-all-deps.jar <options> [files...]
 ```
 
 The formatter can act on whole files, on limited lines (`--lines`), on specific
@@ -42,7 +45,7 @@ The formatter can be used in software which generates java to output more
 legible java code. Just include the library in your maven/gradle/etc.
 configuration.
 
-`google-java-format` uses internal javac APIs for parsing Java source. The
+`qbixus-java-format` uses internal javac APIs for parsing Java source. The
 following JVM flags are required when running on JDK 16 and newer, due to
 [JEP 396: Strongly Encapsulate JDK Internals by Default](https://openjdk.java.net/jeps/396):
 
@@ -59,9 +62,9 @@ following JVM flags are required when running on JDK 16 and newer, due to
 
 ```xml
 <dependency>
-  <groupId>com.google.googlejavaformat</groupId>
-  <artifactId>google-java-format</artifactId>
-  <version>${google-java-format.version}</version>
+  <groupId>io.github.qbixus.googlejavaformat</groupId>
+  <artifactId>qbixus-java-format</artifactId>
+  <version>${qbixus-java-format.version}</version>
 </dependency>
 ```
 
@@ -69,7 +72,7 @@ following JVM flags are required when running on JDK 16 and newer, due to
 
 ```groovy
 dependencies {
-  implementation 'com.google.googlejavaformat:google-java-format:$googleJavaFormatVersion'
+  implementation 'io.github.qbixus.googlejavaformat:qbixus-java-format:$qbixusJavaFormatVersion'
 }
 ```
 
@@ -103,7 +106,7 @@ Please see [the contributors guide](CONTRIBUTING.md) for details.
 ## License
 
 ```text
-Copyright 2015 Google Inc.
+Copyright 2024 Denis Zenin.
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not
 use this file except in compliance with the License. You may obtain a copy of
