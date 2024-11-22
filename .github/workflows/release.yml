@@ -53,7 +53,15 @@ jobs:
           echo "TARGET_COMMITISH=$(git rev-parse HEAD)" >> $GITHUB_ENV
           git remote set-url origin https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/qbixus/qbixus-java-format.git
 
-      - name: Deploy to Sonatype staging
+      - name: Compile and install (вместо Deploy to Sonatype staging)
+        env:
+          CI_DEPLOY_USERNAME: ${{ secrets.CI_DEPLOY_USERNAME }}
+          CI_DEPLOY_PASSWORD: ${{ secrets.CI_DEPLOY_PASSWORD }}
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+        run: mvn --no-transfer-progress clean install
+
+      - name: Deploy to Sonatype staging (интеграция с Sonatype отключена)
+        if: false
         env:
           CI_DEPLOY_USERNAME: ${{ secrets.CI_DEPLOY_USERNAME }}
           CI_DEPLOY_PASSWORD: ${{ secrets.CI_DEPLOY_PASSWORD }}

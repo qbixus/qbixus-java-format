@@ -107,9 +107,9 @@ jobs:
         run: util/test-native.sh
 
   publish_snapshot:
-    name: "Publish snapshot"
+    name: "Publish snapshot (интеграция с Sonatype отключена)"
     needs: test-OpenJDK
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    if: false && github.event_name == 'push' && github.ref == 'refs/heads/master'
       && github.repository == 'qbixus/qbixus-java-format'
     runs-on: ubuntu-latest
     steps:
