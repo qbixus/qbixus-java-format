@@ -83,7 +83,8 @@ jobs:
             core/target/qbixus-java-format-*.jar
 
   build-native-image:
-    name: "Build GraalVM native-image on ${{ matrix.os }}"
+    name: "Build GraalVM native-image on ${{ matrix.os }} (отключено из-за проблем с выгрузкой)"
+    if: false
     runs-on: ${{ matrix.os }}
     needs: build-maven-jars
     strategy:
