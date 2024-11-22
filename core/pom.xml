@@ -22,7 +22,7 @@
   <parent>
     <groupId>io.github.qbixus.googlejavaformat</groupId>
     <artifactId>qbixus-java-format-parent</artifactId>
-  <version>HEAD-SNAPSHOT</version>
+  <version>0.0.0</version>
   </parent>
 
   <artifactId>qbixus-java-format</artifactId>
